@@ -40,7 +40,8 @@ class FamilyAccessService {
           .maybeSingle();
 
       if (users == null) {
-        throw FamilyAccessException('User not found with email: $familyMemberEmail');
+        throw FamilyAccessException(
+            'User not found with email: $familyMemberEmail');
       }
 
       final familyMemberUserId = users['id'] as String;
@@ -55,12 +56,9 @@ class FamilyAccessService {
 
       if (existing != null) {
         // Update existing permission
-        await _supabase
-            .from('family_access')
-            .update({
-              'permission': permission,
-            })
-            .eq('id', existing['id']);
+        await _supabase.from('family_access').update({
+          'permission': permission,
+        }).eq('id', existing['id']);
       } else {
         // Create new access grant
         await _supabase.from('family_access').insert({
@@ -99,7 +97,8 @@ class FamilyAccessService {
   }
 
   /// Get all users who have access to document
-  Future<List<Map<String, dynamic>>> getDocumentAccessList(int documentId) async {
+  Future<List<Map<String, dynamic>>> getDocumentAccessList(
+      int documentId) async {
     try {
       final currentUserId = _supabase.auth.currentUser?.id;
       if (currentUserId == null) {
@@ -181,7 +180,8 @@ class FamilyAccessService {
 
       final response = await _supabase
           .from('family_access')
-          .select('shared_with_user_id, users:shared_with_user_id(id, email, raw_user_meta_data)')
+          .select(
+              'shared_with_user_id, users:shared_with_user_id(id, email, raw_user_meta_data)')
           .eq('user_id', currentUserId);
 
       final uniqueUsers = <String, Map<String, dynamic>>{};

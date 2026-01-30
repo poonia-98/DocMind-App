@@ -4,19 +4,19 @@ import 'package:crypto/crypto.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// Production-ready blockchain audit trail for document integrity
-/// 
+///
 /// PURPOSE:
 /// - Create immutable record of document state
 /// - Detect unauthorized modifications
 /// - Provide cryptographic proof of document authenticity
 /// - Compliance & legal evidence
-/// 
+///
 /// HOW IT WORKS:
 /// 1. When document is uploaded/modified, hash its metadata + content
 /// 2. Store hash in `document_audit_trail` table (immutable)
 /// 3. Each entry links to previous hash (blockchain chain)
 /// 4. Verification checks if current hash matches stored hash
-/// 
+///
 /// WHAT IS HASHED:
 /// - Document ID
 /// - User ID
@@ -24,13 +24,13 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 /// - Upload timestamp
 /// - Content checksum
 /// - Previous block hash (for chain)
-/// 
+///
 /// WHY BLOCKCHAIN:
 /// - Tamper-evident: Any change breaks the chain
 /// - Timestamped: Proves document existed at specific time
 /// - Decentralized trust: No single point of failure
 /// - Audit compliance: Required for enterprise/legal
-/// 
+///
 /// INTEGRATION:
 /// - Called automatically after document upload
 /// - Called on vault document access
@@ -115,10 +115,12 @@ class BlockchainAuditService {
       // Verify chain integrity
       for (var entry in (auditEntries as List)) {
         final storedHash = entry['hash'] as String;
-        final blockData = jsonDecode(entry['blockchain_tx']) as Map<String, dynamic>;
+        final blockData =
+            jsonDecode(entry['blockchain_tx']) as Map<String, dynamic>;
 
         // Verify previous hash matches
-        if (previousHash != null && blockData['previous_hash'] != previousHash) {
+        if (previousHash != null &&
+            blockData['previous_hash'] != previousHash) {
           // Chain broken = tampered
           return false;
         }
@@ -176,19 +178,19 @@ class BlockchainAuditService {
     try {
       await _supabase
           .from('document_audit_trail')
-          .update({'verified': true})
-          .eq('document_id', documentId);
+          .update({'verified': true}).eq('document_id', documentId);
     } catch (e) {
       throw BlockchainAuditException('Failed to mark as verified: $e');
     }
   }
 
   /// Get verification status
-  Future<DocumentVerificationStatus> getVerificationStatus(int documentId) async {
+  Future<DocumentVerificationStatus> getVerificationStatus(
+      int documentId) async {
     try {
       final isValid = await verifyDocumentIntegrity(documentId);
       final auditTrail = await getAuditTrail(documentId);
-      
+
       return DocumentVerificationStatus(
         isVerified: isValid,
         auditCount: auditTrail.length,

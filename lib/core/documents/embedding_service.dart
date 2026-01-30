@@ -58,11 +58,10 @@ class EmbeddingService {
 
       try {
         final embedding = await generateEmbedding(content);
-        
+
         await _supabase
             .from('document_sections')
-            .update({'embedding': embedding})
-            .eq('id', sectionId);
+            .update({'embedding': embedding}).eq('id', sectionId);
 
         print('✅ Embedding added to section $sectionId');
       } catch (e) {

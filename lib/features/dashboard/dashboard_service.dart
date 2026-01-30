@@ -40,14 +40,18 @@ class DashboardService {
     // Total documents
     final totalDocs = await _supabase
         .from('documents')
-        .select('id',)
+        .select(
+          'id',
+        )
         .eq('user_id', userId)
         .eq('is_deleted', false);
 
     // Processing documents
     final processing = await _supabase
         .from('documents')
-        .select('id', )
+        .select(
+          'id',
+        )
         .eq('user_id', userId)
         .eq('status', 'processing')
         .eq('is_deleted', false);
@@ -55,7 +59,9 @@ class DashboardService {
     // Ready documents
     final ready = await _supabase
         .from('documents')
-        .select('id', )
+        .select(
+          'id',
+        )
         .eq('user_id', userId)
         .eq('status', 'ready')
         .eq('is_deleted', false);
@@ -63,7 +69,9 @@ class DashboardService {
     // Vault documents
     final vault = await _supabase
         .from('documents')
-        .select('id', )
+        .select(
+          'id',
+        )
         .eq('user_id', userId)
         .eq('is_vault', true)
         .eq('is_deleted', false);
@@ -74,7 +82,8 @@ class DashboardService {
       'ready': (ready as List).length,
       'vault': (vault as List).length,
       'percentProcessed': (totalDocs as List).isNotEmpty
-          ? (((ready as List).length / (totalDocs as List).length) * 100).toInt()
+          ? (((ready as List).length / (totalDocs as List).length) * 100)
+              .toInt()
           : 0,
     };
   }
@@ -87,20 +96,26 @@ class DashboardService {
     // Total obligations
     final total = await _supabase
         .from('obligations')
-        .select('id', )
+        .select(
+          'id',
+        )
         .eq('user_id', userId);
 
     // Pending obligations
     final pending = await _supabase
         .from('obligations')
-        .select('id', )
+        .select(
+          'id',
+        )
         .eq('user_id', userId)
         .eq('status', 'pending');
 
     // Overdue (due_date < today AND status = pending)
     final overdue = await _supabase
         .from('obligations')
-        .select('id', )
+        .select(
+          'id',
+        )
         .eq('user_id', userId)
         .eq('status', 'pending')
         .lt('due_date', now.toIso8601String().split('T')[0]);
@@ -109,7 +124,9 @@ class DashboardService {
     final sevenDaysLater = now.add(const Duration(days: 7));
     final expiringSoon = await _supabase
         .from('obligations')
-        .select('id',)
+        .select(
+          'id',
+        )
         .eq('user_id', userId)
         .eq('status', 'pending')
         .gte('due_date', now.toIso8601String().split('T')[0])
@@ -118,7 +135,9 @@ class DashboardService {
     // Completed
     final completed = await _supabase
         .from('obligations')
-        .select('id', )
+        .select(
+          'id',
+        )
         .eq('user_id', userId)
         .eq('status', 'completed');
 
@@ -137,7 +156,9 @@ class DashboardService {
 
     final total = await _supabase
         .from('life_entities')
-        .select('id', )
+        .select(
+          'id',
+        )
         .eq('user_id', userId);
 
     // Count by type
@@ -164,12 +185,16 @@ class DashboardService {
 
     final total = await _supabase
         .from('reminders')
-        .select('id', )
+        .select(
+          'id',
+        )
         .eq('user_id', userId);
 
     final pending = await _supabase
         .from('reminders')
-        .select('id', )
+        .select(
+          'id',
+        )
         .eq('user_id', userId)
         .eq('sent', false)
         .gte('remind_at', DateTime.now().toIso8601String());
@@ -230,7 +255,8 @@ class DashboardService {
   }
 
   /// Get upcoming obligations (for dashboard alerts)
-  Future<List<Map<String, dynamic>>> getUpcomingObligations({int daysAhead = 30}) async {
+  Future<List<Map<String, dynamic>>> getUpcomingObligations(
+      {int daysAhead = 30}) async {
     try {
       final result = await _supabase
           .rpc('get_upcoming_obligations', params: {'days_ahead': daysAhead});

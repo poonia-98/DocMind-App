@@ -37,10 +37,11 @@ class AuthService {
   Future<String?> getToken() async {
     final session = _supabase.auth.currentSession;
     if (session == null) return null;
-    
+
     // Check if token is expired
     final expiresAt = session.expiresAt;
-    if (expiresAt != null && DateTime.now().millisecondsSinceEpoch / 1000 >= expiresAt) {
+    if (expiresAt != null &&
+        DateTime.now().millisecondsSinceEpoch / 1000 >= expiresAt) {
       // Refresh the session
       try {
         final refreshResponse = await _supabase.auth.refreshSession();
@@ -50,22 +51,23 @@ class AuthService {
         return null;
       }
     }
-    
+
     return session.accessToken;
   }
 
   // ✅ AUTH CHECK (Fixed: Now returns Future<bool>)
   Future<bool> isAuthenticated() async {
     final session = _supabase.auth.currentSession;
-    
+
     if (session == null) return false;
-    
+
     // Verify token is not expired
     final expiresAt = session.expiresAt;
-    if (expiresAt != null && DateTime.now().millisecondsSinceEpoch / 1000 >= expiresAt) {
+    if (expiresAt != null &&
+        DateTime.now().millisecondsSinceEpoch / 1000 >= expiresAt) {
       return false;
     }
-    
+
     return true;
   }
 

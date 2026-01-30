@@ -215,7 +215,7 @@ class ExpiryChart extends StatelessWidget {
       child: Center(
         child: Column(
           children: [
-           const Icon(
+            const Icon(
               Icons.check_circle_outline,
               size: 48,
               color: AppColors.success,

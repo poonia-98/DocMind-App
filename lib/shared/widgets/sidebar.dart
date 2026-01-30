@@ -19,12 +19,10 @@ class AppSidebar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark =
-        Theme.of(context).brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Drawer(
-      backgroundColor:
-          isDark ? AppColors.surfaceDark : AppColors.surface,
+      backgroundColor: isDark ? AppColors.surfaceDark : AppColors.surface,
       child: SafeArea(
         child: Column(
           children: [
@@ -38,8 +36,7 @@ class AppSidebar extends StatelessWidget {
                     height: 48,
                     decoration: BoxDecoration(
                       color: AppColors.accent,
-                      borderRadius:
-                          BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                     child: const Icon(
                       Icons.security,
@@ -49,8 +46,7 @@ class AppSidebar extends StatelessWidget {
                   ),
                   const SizedBox(width: 16),
                   Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'Enterprise Vault',
@@ -62,8 +58,7 @@ class AppSidebar extends StatelessWidget {
                       ),
                       Text(
                         'Secure Document Management',
-                        style: AppTextStyles.bodySmall
-                            .copyWith(
+                        style: AppTextStyles.bodySmall.copyWith(
                           color: isDark
                               ? AppColors.textSecondaryDark
                               : AppColors.textSecondary,
@@ -76,16 +71,13 @@ class AppSidebar extends StatelessWidget {
             ),
 
             Divider(
-              color: isDark
-                  ? AppColors.dividerDark
-                  : AppColors.divider,
+              color: isDark ? AppColors.dividerDark : AppColors.divider,
             ),
 
             // ---------------- MENU ----------------
             Expanded(
               child: ListView(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8),
+                padding: const EdgeInsets.symmetric(vertical: 8),
                 children: [
                   _SidebarItem(
                     icon: Icons.chat_outlined,
@@ -95,8 +87,7 @@ class AppSidebar extends StatelessWidget {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (_) =>
-                              const ChatScreen(),
+                          builder: (_) => const ChatScreen(),
                         ),
                       );
                     },
@@ -109,8 +100,7 @@ class AppSidebar extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) =>
-                              const DashboardScreen(),
+                          builder: (_) => const DashboardScreen(),
                         ),
                       );
                     },
@@ -123,8 +113,7 @@ class AppSidebar extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) =>
-                              const DocumentListScreen(),
+                          builder: (_) => const DocumentListScreen(),
                         ),
                       );
                     },
@@ -137,8 +126,7 @@ class AppSidebar extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) =>
-                              const VaultScreen(),
+                          builder: (_) => const VaultScreen(),
                         ),
                       );
                     },
@@ -151,8 +139,7 @@ class AppSidebar extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) =>
-                              const EntitiesScreen(),
+                          builder: (_) => const EntitiesScreen(),
                         ),
                       );
                     },
@@ -166,8 +153,7 @@ class AppSidebar extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) =>
-                              const ProfileScreen(),
+                          builder: (_) => const ProfileScreen(),
                         ),
                       );
                     },
@@ -180,8 +166,7 @@ class AppSidebar extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) =>
-                              const SettingsScreen(),
+                          builder: (_) => const SettingsScreen(),
                         ),
                       );
                     },
@@ -191,9 +176,7 @@ class AppSidebar extends StatelessWidget {
             ),
 
             Divider(
-              color: isDark
-                  ? AppColors.dividerDark
-                  : AppColors.divider,
+              color: isDark ? AppColors.dividerDark : AppColors.divider,
             ),
 
             // ---------------- LOGOUT ----------------
@@ -208,8 +191,7 @@ class AppSidebar extends StatelessWidget {
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                        builder: (_) =>
-                            const LoginScreen(),
+                        builder: (_) => const LoginScreen(),
                       ),
                       (_) => false,
                     );
@@ -239,22 +221,17 @@ class _SidebarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark =
-        Theme.of(context).brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return ListTile(
       leading: Icon(
         icon,
-        color: isDark
-            ? AppColors.textPrimaryDark
-            : AppColors.textPrimary,
+        color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimary,
       ),
       title: Text(
         label,
         style: AppTextStyles.bodyLarge.copyWith(
-          color: isDark
-              ? AppColors.textPrimaryDark
-              : AppColors.textPrimary,
+          color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimary,
         ),
       ),
       onTap: onTap,

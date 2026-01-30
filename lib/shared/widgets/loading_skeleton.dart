@@ -30,7 +30,7 @@ class _LoadingSkeletonState extends State<LoadingSkeleton>
       duration: const Duration(milliseconds: 1500),
       vsync: this,
     )..repeat();
-    
+
     _animation = Tween<double>(begin: 0.3, end: 0.7).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
@@ -45,7 +45,7 @@ class _LoadingSkeletonState extends State<LoadingSkeleton>
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return AnimatedBuilder(
       animation: _animation,
       builder: (context, child) {

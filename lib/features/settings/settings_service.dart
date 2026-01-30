@@ -19,29 +19,31 @@ class SettingsService {
 
       // Get from user metadata
       final metadata = user.userMetadata ?? {};
-      final preferences = metadata['preferences'] as Map<String, dynamic>? ?? {};
+      final preferences =
+          metadata['preferences'] as Map<String, dynamic>? ?? {};
 
       return {
         // Appearance
-        'theme_mode': preferences['theme_mode'] ?? 'system', // 'light', 'dark', 'system'
-        
+        'theme_mode':
+            preferences['theme_mode'] ?? 'system', // 'light', 'dark', 'system'
+
         // Security
         'biometric_enabled': preferences['biometric_enabled'] ?? false,
         'auto_lock_enabled': preferences['auto_lock_enabled'] ?? false,
         'auto_lock_timeout': preferences['auto_lock_timeout'] ?? 300, // seconds
         'vault_extra_lock': preferences['vault_extra_lock'] ?? false,
-        
+
         // Notifications
         'notifications_enabled': preferences['notifications_enabled'] ?? true,
         'expiry_alerts': preferences['expiry_alerts'] ?? true,
         'overdue_alerts': preferences['overdue_alerts'] ?? true,
         'reminder_alerts': preferences['reminder_alerts'] ?? true,
         'push_notifications': preferences['push_notifications'] ?? false,
-        
+
         // Privacy
         'analytics_enabled': preferences['analytics_enabled'] ?? false,
         'crash_reporting': preferences['crash_reporting'] ?? true,
-        
+
         // Chat
         'chat_history_enabled': preferences['chat_history_enabled'] ?? true,
         'save_context': preferences['save_context'] ?? true,
@@ -75,7 +77,7 @@ class SettingsService {
 
       // Get current preferences
       final currentPrefs = await getUserPreferences();
-      
+
       // Merge updates
       final newPrefs = {...currentPrefs, ...updates};
 
@@ -94,7 +96,7 @@ class SettingsService {
         for (var entry in updates.entries) {
           final key = 'pref_${entry.key}';
           final value = entry.value;
-          
+
           if (value is bool) {
             await _prefs!.setBool(key, value);
           } else if (value is int) {

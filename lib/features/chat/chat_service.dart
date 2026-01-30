@@ -6,23 +6,21 @@ class ChatService {
   final _supabase = Supabase.instance.client;
   final _uuid = const Uuid();
 
-
   /// Get full document text for AI context
-Future<String?> getDocumentText(int documentId) async {
-  final userId = _supabase.auth.currentUser?.id;
-  if (userId == null) return null;
+  Future<String?> getDocumentText(int documentId) async {
+    final userId = _supabase.auth.currentUser?.id;
+    if (userId == null) return null;
 
-  final doc = await _supabase
-      .from('documents')
-      .select('content')
-      .eq('id', documentId)
-      .eq('user_id', userId)
-      .eq('is_deleted', false)
-      .maybeSingle();
+    final doc = await _supabase
+        .from('documents')
+        .select('content')
+        .eq('id', documentId)
+        .eq('user_id', userId)
+        .eq('is_deleted', false)
+        .maybeSingle();
 
-  return doc?['content'] as String?;
-}
-
+    return doc?['content'] as String?;
+  }
 
   /// Get or create session ID for document
   /// Each document has its own persistent chat session
@@ -91,7 +89,7 @@ Future<String?> getDocumentText(int documentId) async {
           .order('created_at', ascending: false);
 
       final sessions = <String, Map<String, dynamic>>{};
-      
+
       for (var msg in (response as List)) {
         final sessionId = msg['session_id'] as String;
         if (!sessions.containsKey(sessionId)) {
@@ -132,10 +130,7 @@ Future<String?> getDocumentText(int documentId) async {
       final userId = _supabase.auth.currentUser?.id;
       if (userId == null) throw Exception('User not authenticated');
 
-      await _supabase
-          .from('chat_history')
-          .delete()
-          .eq('user_id', userId);
+      await _supabase.from('chat_history').delete().eq('user_id', userId);
     } catch (e) {
       throw Exception('Failed to clear history: $e');
     }
@@ -168,50 +163,46 @@ Future<String?> getDocumentText(int documentId) async {
 
   /// Search relevant document sections for RAG (Retrieval Augmented Generation)
   Future<List<Map<String, dynamic>>> searchDocumentSections({
-  required String query,
-  int? documentId,
-  int limit = 5,
-}) async {
-  final userId = _supabase.auth.currentUser?.id;
-  if (userId == null) return [];
+    required String query,
+    int? documentId,
+    int limit = 5,
+  }) async {
+    final userId = _supabase.auth.currentUser?.id;
+    if (userId == null) return [];
 
-  try {
-    final List data = await _supabase
-        .from('document_sections')
-        .select('id, document_id, content, section_order')
-        .eq('user_id', userId)
-        .eq(
-          documentId != null ? 'document_id' : 'id',
-          documentId ?? 0,
-        )
-        .ilike('content', '%$query%')
-        .limit(limit);
+    try {
+      final List data = await _supabase
+          .from('document_sections')
+          .select('id, document_id, content, section_order')
+          .eq('user_id', userId)
+          .eq(
+            documentId != null ? 'document_id' : 'id',
+            documentId ?? 0,
+          )
+          .ilike('content', '%$query%')
+          .limit(limit);
 
-    return data.cast<Map<String, dynamic>>();
-  } catch (e) {
-    return [];
+      return data.cast<Map<String, dynamic>>();
+    } catch (e) {
+      return [];
+    }
   }
-}
-
 
   /// Get message count for session
   Future<int> getMessageCount(String sessionId) async {
-  try {
-    final userId = _supabase.auth.currentUser?.id;
-    if (userId == null) return 0;
+    try {
+      final userId = _supabase.auth.currentUser?.id;
+      if (userId == null) return 0;
 
-    final List data = await _supabase
-        .from('chat_history')
-        .select('id')
-        .match({
-          'user_id': userId,
-          'session_id': sessionId,
-        });
+      final List data =
+          await _supabase.from('chat_history').select('id').match({
+        'user_id': userId,
+        'session_id': sessionId,
+      });
 
-    return data.length;
-  } catch (e) {
-    return 0;
+      return data.length;
+    } catch (e) {
+      return 0;
+    }
   }
 }
-}
-

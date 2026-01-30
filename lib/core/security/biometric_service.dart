@@ -39,7 +39,7 @@ class BiometricService {
   Future<String> getBiometricTypeName() async {
     try {
       final biometrics = await getAvailableBiometrics();
-      
+
       if (biometrics.isEmpty) {
         return 'Biometric Authentication';
       }
@@ -86,13 +86,17 @@ class BiometricService {
     } on PlatformException catch (e) {
       // Handle specific platform exceptions
       if (e.code == 'NotAvailable') {
-        throw BiometricException('Biometric authentication is not available on this device');
+        throw BiometricException(
+            'Biometric authentication is not available on this device');
       } else if (e.code == 'NotEnrolled') {
-        throw BiometricException('No biometrics enrolled. Please set up Face ID or Fingerprint in device settings');
+        throw BiometricException(
+            'No biometrics enrolled. Please set up Face ID or Fingerprint in device settings');
       } else if (e.code == 'LockedOut') {
-        throw BiometricException('Too many failed attempts. Please try again later');
+        throw BiometricException(
+            'Too many failed attempts. Please try again later');
       } else if (e.code == 'PermanentlyLockedOut') {
-        throw BiometricException('Biometric authentication is permanently locked. Use device passcode');
+        throw BiometricException(
+            'Biometric authentication is permanently locked. Use device passcode');
       } else {
         throw BiometricException('Authentication failed: ${e.message}');
       }

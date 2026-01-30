@@ -23,10 +23,7 @@ class ApiClient {
   final _supabase = Supabase.instance.client;
   final _embeddingService = EmbeddingService();
 
-
-
-
-  static const int QUEUE_THRESHOLD = 5 * 1024 * 1024; 
+  static const int QUEUE_THRESHOLD = 5 * 1024 * 1024;
 
   Future<Map<String, String>> _getHeaders() async {
     final token = await _authService.getToken();
@@ -40,43 +37,48 @@ class ApiClient {
     };
   }
 
-  
-
-  Future<dynamic> get(String endpoint, {Map<String, String>? queryParams}) async {
+  Future<dynamic> get(String endpoint,
+      {Map<String, String>? queryParams}) async {
     final headers = await _getHeaders();
     var uri = Uri.parse('${AppConfig.supabaseUrl}/api/$endpoint');
     if (queryParams != null && queryParams.isNotEmpty) {
       uri = uri.replace(queryParameters: queryParams);
     }
-    final response = await http.get(uri, headers: headers).timeout(AppConfig.requestTimeout);
+    final response =
+        await http.get(uri, headers: headers).timeout(AppConfig.requestTimeout);
     return _handleResponse(response);
   }
 
   Future<dynamic> post(String endpoint, Map<String, dynamic> data) async {
     final headers = await _getHeaders();
     final uri = Uri.parse('${AppConfig.supabaseUrl}/api/$endpoint');
-    final response = await http.post(uri, headers: headers, body: json.encode(data)).timeout(AppConfig.requestTimeout);
+    final response = await http
+        .post(uri, headers: headers, body: json.encode(data))
+        .timeout(AppConfig.requestTimeout);
     return _handleResponse(response);
   }
 
   Future<dynamic> put(String endpoint, Map<String, dynamic> data) async {
     final headers = await _getHeaders();
     final uri = Uri.parse('${AppConfig.supabaseUrl}/api/$endpoint');
-    final response = await http.put(uri, headers: headers, body: json.encode(data)).timeout(AppConfig.requestTimeout);
+    final response = await http
+        .put(uri, headers: headers, body: json.encode(data))
+        .timeout(AppConfig.requestTimeout);
     return _handleResponse(response);
   }
 
-  Future<dynamic> delete(String endpoint, {Map<String, String>? queryParams}) async {
+  Future<dynamic> delete(String endpoint,
+      {Map<String, String>? queryParams}) async {
     final headers = await _getHeaders();
     var uri = Uri.parse('${AppConfig.supabaseUrl}/api/$endpoint');
     if (queryParams != null && queryParams.isNotEmpty) {
       uri = uri.replace(queryParameters: queryParams);
     }
-    final response = await http.delete(uri, headers: headers).timeout(AppConfig.requestTimeout);
+    final response = await http
+        .delete(uri, headers: headers)
+        .timeout(AppConfig.requestTimeout);
     return _handleResponse(response);
   }
-
- 
 
   Future<dynamic> uploadFile(File file) async {
     final user = _supabase.auth.currentUser;
@@ -86,27 +88,32 @@ class ApiClient {
       final fileName = file.path.split('/').last;
       final fileSize = await file.length();
       final fileBytes = await file.readAsBytes();
-      final storagePath = 'uploads/${user.id}/${DateTime.now().millisecondsSinceEpoch}_$fileName';
+      final storagePath =
+          'uploads/${user.id}/${DateTime.now().millisecondsSinceEpoch}_$fileName';
 
       //  storage me upload
       await _supabase.storage
           .from('documents')
           .uploadBinary(storagePath, fileBytes);
 
-      //  document create 
-      final doc = await _supabase.from('documents').insert({
-        'user_id': user.id,
-        'title': fileName,
-        'file_type': fileName.split('.').last,
-        'file_size': fileSize,
-        'status': 'processing',
-        'processed': false,
-        'source': 'queue',
-      }).select().single();
+      //  document create
+      final doc = await _supabase
+          .from('documents')
+          .insert({
+            'user_id': user.id,
+            'title': fileName,
+            'file_type': fileName.split('.').last,
+            'file_size': fileSize,
+            'status': 'processing',
+            'processed': false,
+            'source': 'queue',
+          })
+          .select()
+          .single();
 
       final documentId = doc['id'] as int;
 
-      // job create 
+      // job create
       await _supabase.from('jobs').insert({
         'user_id': user.id,
         'document_id': documentId,
@@ -120,10 +127,9 @@ class ApiClient {
 
       //  CREATE BLOCKCHAIN AUDIT ENTRY
       final blockchainAudit = BlockchainAuditService();
-      final contentHash = blockchainAudit.generateContentHash(
-        String.fromCharCodes(fileBytes)
-      );
-      
+      final contentHash =
+          blockchainAudit.generateContentHash(String.fromCharCodes(fileBytes));
+
       await blockchainAudit.createAuditEntry(
         documentId: documentId,
         userId: user.id,
@@ -144,37 +150,38 @@ class ApiClient {
   Future<void> _generateEmbeddingsInBackground(int documentId) async {
     try {
       print('⏳ Waiting for document $documentId to finish processing...');
-      
+
       // Wait for OCR processing to complete (max 60 seconds)
       for (int i = 0; i < 60; i++) {
         await Future.delayed(const Duration(seconds: 1));
-        
+
         final doc = await _supabase
             .from('documents')
             .select('status, processed')
             .eq('id', documentId)
             .single();
-        
+
         if (doc['status'] == 'ready' && doc['processed'] == true) {
-          print('📄 Document $documentId processing complete, generating embeddings...');
-          
+          print(
+              '📄 Document $documentId processing complete, generating embeddings...');
+
           // Generate embeddings for all sections
           await _embeddingService.addEmbeddingsToDocument(documentId);
-          
+
           print('✅ Embeddings generated successfully for document $documentId');
           return;
         }
-        
+
         if (doc['status'] == 'failed') {
-          print('❌ Document $documentId processing failed, skipping embeddings');
+          print(
+              '❌ Document $documentId processing failed, skipping embeddings');
           return;
         }
       }
-      
+
       print('⚠️ Timeout waiting for document $documentId processing');
     } catch (e) {
       print('❌ Error generating embeddings for document $documentId: $e');
-      
     }
   }
 
@@ -182,16 +189,17 @@ class ApiClient {
 
   List<String> _createChunks(String text, int wordsPerChunk) {
     if (text.isEmpty) return [];
-    
+
     // Extra spaces saaf karo aur split karo
     List<String> words = text.trim().split(RegExp(r'\s+'));
     List<String> chunks = [];
-    
+
     for (var i = 0; i < words.length; i += wordsPerChunk) {
-      int end = (i + wordsPerChunk < words.length) ? i + wordsPerChunk : words.length;
+      int end =
+          (i + wordsPerChunk < words.length) ? i + wordsPerChunk : words.length;
       chunks.add(words.sublist(i, end).join(' '));
     }
-    
+
     return chunks;
   }
 

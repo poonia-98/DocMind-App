@@ -23,21 +23,23 @@ class MessageBubble extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
-        mainAxisAlignment: isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+        mainAxisAlignment:
+            isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (!isUser) ...[
             CircleAvatar(
               radius: 16,
-              backgroundColor: isError 
-                ? Colors.red.withOpacity(0.2)
-                : (isDark ? AppColors.primaryDark : AppColors.primary).withOpacity(0.2),
+              backgroundColor: isError
+                  ? Colors.red.withOpacity(0.2)
+                  : (isDark ? AppColors.primaryDark : AppColors.primary)
+                      .withOpacity(0.2),
               child: Icon(
                 isError ? Icons.error_outline : Icons.smart_toy,
                 size: 16,
-                color: isError 
-                  ? Colors.red
-                  : (isDark ? AppColors.primaryDark : AppColors.primary),
+                color: isError
+                    ? Colors.red
+                    : (isDark ? AppColors.primaryDark : AppColors.primary),
               ),
             ),
             const SizedBox(width: 8),
@@ -49,10 +51,16 @@ class MessageBubble extends StatelessWidget {
                 color: isError
                     ? Colors.red.withOpacity(0.1)
                     : isUser
-                        ? (isDark ? AppColors.messageBubbleUserDark : AppColors.messageBubbleUser)
-                        : (isDark ? AppColors.messageBubbleSystemDark : AppColors.messageBubbleSystem),
+                        ? (isDark
+                            ? AppColors.messageBubbleUserDark
+                            : AppColors.messageBubbleUser)
+                        : (isDark
+                            ? AppColors.messageBubbleSystemDark
+                            : AppColors.messageBubbleSystem),
                 borderRadius: BorderRadius.circular(12),
-                border: isError ? Border.all(color: Colors.red.withOpacity(0.3)) : null,
+                border: isError
+                    ? Border.all(color: Colors.red.withOpacity(0.3))
+                    : null,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,8 +71,12 @@ class MessageBubble extends StatelessWidget {
                       color: isError
                           ? Colors.red
                           : isUser
-                              ? (isDark ? AppColors.textPrimaryDark : Colors.white)
-                              : (isDark ? AppColors.textPrimaryDark : AppColors.textPrimary),
+                              ? (isDark
+                                  ? AppColors.textPrimaryDark
+                                  : Colors.white)
+                              : (isDark
+                                  ? AppColors.textPrimaryDark
+                                  : AppColors.textPrimary),
                       fontSize: 15,
                     ),
                   ),
@@ -75,8 +87,12 @@ class MessageBubble extends StatelessWidget {
                       color: isError
                           ? Colors.red.withOpacity(0.7)
                           : isUser
-                              ? (isDark ? AppColors.textSecondaryDark.withOpacity(0.7) : Colors.white70)
-                              : (isDark ? AppColors.textSecondaryDark : AppColors.textSecondary),
+                              ? (isDark
+                                  ? AppColors.textSecondaryDark.withOpacity(0.7)
+                                  : Colors.white70)
+                              : (isDark
+                                  ? AppColors.textSecondaryDark
+                                  : AppColors.textSecondary),
                       fontSize: 11,
                     ),
                   ),
@@ -88,7 +104,9 @@ class MessageBubble extends StatelessWidget {
             const SizedBox(width: 8),
             CircleAvatar(
               radius: 16,
-              backgroundColor: (isDark ? AppColors.primaryDark : AppColors.primary).withOpacity(0.2),
+              backgroundColor:
+                  (isDark ? AppColors.primaryDark : AppColors.primary)
+                      .withOpacity(0.2),
               child: Icon(
                 Icons.person,
                 size: 16,

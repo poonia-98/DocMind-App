@@ -110,9 +110,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           value: _preferences['theme_mode'] ?? 'system',
                           underline: const SizedBox.shrink(),
                           items: const [
-                            DropdownMenuItem(value: 'light', child: Text('Light')),
-                            DropdownMenuItem(value: 'dark', child: Text('Dark')),
-                            DropdownMenuItem(value: 'system', child: Text('System')),
+                            DropdownMenuItem(
+                                value: 'light', child: Text('Light')),
+                            DropdownMenuItem(
+                                value: 'dark', child: Text('Dark')),
+                            DropdownMenuItem(
+                                value: 'system', child: Text('System')),
                           ],
                           onChanged: (value) {
                             if (value != null) {
@@ -166,10 +169,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             value: _preferences['auto_lock_timeout'] ?? 300,
                             underline: const SizedBox.shrink(),
                             items: const [
-                              DropdownMenuItem(value: 0, child: Text('Immediate')),
-                              DropdownMenuItem(value: 60, child: Text('1 minute')),
-                              DropdownMenuItem(value: 300, child: Text('5 minutes')),
-                              DropdownMenuItem(value: 600, child: Text('10 minutes')),
+                              DropdownMenuItem(
+                                  value: 0, child: Text('Immediate')),
+                              DropdownMenuItem(
+                                  value: 60, child: Text('1 minute')),
+                              DropdownMenuItem(
+                                  value: 300, child: Text('5 minutes')),
+                              DropdownMenuItem(
+                                  value: 600, child: Text('10 minutes')),
                             ],
                             onChanged: (value) {
                               if (value != null) {
@@ -344,7 +351,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       _SettingTile(
                         title: 'Delete Account',
                         subtitle: 'Permanently delete your account',
-                        leading: Icon(Icons.delete_forever, color: AppColors.error),
+                        leading:
+                            Icon(Icons.delete_forever, color: AppColors.error),
                         textColor: AppColors.error,
                         onTap: _handleDeleteAccount,
                       ),

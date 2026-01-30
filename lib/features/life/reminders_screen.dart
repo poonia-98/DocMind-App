@@ -28,7 +28,8 @@ class _RemindersScreenState extends State<RemindersScreen> {
     try {
       final response = await _apiClient.get('life-entities/reminders');
       setState(() {
-        _reminders = List<Map<String, dynamic>>.from(response['reminders'] ?? []);
+        _reminders =
+            List<Map<String, dynamic>>.from(response['reminders'] ?? []);
         _isLoading = false;
       });
     } catch (e) {
@@ -41,7 +42,7 @@ class _RemindersScreenState extends State<RemindersScreen> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Reminders'),
@@ -56,14 +57,18 @@ class _RemindersScreenState extends State<RemindersScreen> {
                       Icon(
                         Icons.notifications_outlined,
                         size: 64,
-                        color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondary,
+                        color: isDark
+                            ? AppColors.textSecondaryDark
+                            : AppColors.textSecondary,
                       ),
                       const SizedBox(height: 16),
                       Text(
                         'No reminders',
                         style: TextStyle(
                           fontSize: 18,
-                          color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondary,
+                          color: isDark
+                              ? AppColors.textSecondaryDark
+                              : AppColors.textSecondary,
                         ),
                       ),
                     ],
@@ -123,7 +128,7 @@ class _ReminderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final typeColor = _getTypeColor(type);
-    
+
     return PremiumCard(
       onTap: onTap,
       margin: const EdgeInsets.only(bottom: 12),
@@ -148,7 +153,8 @@ class _ReminderCard extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600),
+                  style: AppTextStyles.bodyMedium
+                      .copyWith(fontWeight: FontWeight.w600),
                 ),
                 if (description.isNotEmpty) ...[
                   const SizedBox(height: 4),

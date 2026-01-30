@@ -61,7 +61,7 @@ class _SignupScreenState extends State<SignupScreen> {
       // Check if email confirmation is required
       if (response.user!.emailConfirmedAt == null) {
         if (!mounted) return;
-        
+
         // Show email verification required dialog
         await showDialog(
           context: context,
@@ -130,7 +130,6 @@ class _SignupScreenState extends State<SignupScreen> {
 
       // OAuth will redirect back to app, handled by deep link
       // User will be auto-logged in when they return
-      
     } on AuthException catch (e) {
       setState(() {
         _errorMessage = e.message;
@@ -181,14 +180,18 @@ class _SignupScreenState extends State<SignupScreen> {
                 Text(
                   'Create Account',
                   style: AppTextStyles.h1.copyWith(
-                    color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimary,
+                    color: isDark
+                        ? AppColors.textPrimaryDark
+                        : AppColors.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   'Join Enterprise Vault today',
                   style: AppTextStyles.bodyLarge.copyWith(
-                    color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondary,
+                    color: isDark
+                        ? AppColors.textSecondaryDark
+                        : AppColors.textSecondary,
                   ),
                 ),
                 const SizedBox(height: 48),
@@ -224,7 +227,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your email';
                     }
-                    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                    final emailRegex =
+                        RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
                     if (!emailRegex.hasMatch(value)) {
                       return 'Please enter a valid email';
                     }
@@ -242,7 +246,9 @@ class _SignupScreenState extends State<SignupScreen> {
                     prefixIcon: const Icon(Icons.lock_outlined),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                        _obscurePassword
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
                       ),
                       onPressed: () {
                         setState(() {
@@ -278,7 +284,9 @@ class _SignupScreenState extends State<SignupScreen> {
                     prefixIcon: const Icon(Icons.lock_outlined),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscureConfirmPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                        _obscureConfirmPassword
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
                       ),
                       onPressed: () {
                         setState(() {
@@ -309,12 +317,14 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     child: Row(
                       children: [
-                        const Icon(Icons.error_outline, color: AppColors.error, size: 20),
+                        const Icon(Icons.error_outline,
+                            color: AppColors.error, size: 20),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
                             _errorMessage!,
-                            style: AppTextStyles.bodySmall.copyWith(color: AppColors.error),
+                            style: AppTextStyles.bodySmall
+                                .copyWith(color: AppColors.error),
                           ),
                         ),
                       ],
@@ -340,7 +350,9 @@ class _SignupScreenState extends State<SignupScreen> {
                       child: Text(
                         'OR',
                         style: AppTextStyles.bodySmall.copyWith(
-                          color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondary,
+                          color: isDark
+                              ? AppColors.textSecondaryDark
+                              : AppColors.textSecondary,
                         ),
                       ),
                     ),
@@ -364,7 +376,9 @@ class _SignupScreenState extends State<SignupScreen> {
                       Icon(
                         Icons.g_mobiledata,
                         size: 28,
-                        color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimary,
+                        color: isDark
+                            ? AppColors.textPrimaryDark
+                            : AppColors.textPrimary,
                       ),
                       const SizedBox(width: 12),
                       Text(
@@ -391,10 +405,12 @@ class _SignupScreenState extends State<SignupScreen> {
                       text: TextSpan(
                         text: 'Already have an account? ',
                         style: AppTextStyles.bodyMedium.copyWith(
-                          color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondary,
+                          color: isDark
+                              ? AppColors.textSecondaryDark
+                              : AppColors.textSecondary,
                         ),
                         children: [
-                         TextSpan(
+                          TextSpan(
                             text: 'Sign In',
                             style: TextStyle(
                               color: AppColors.accent,

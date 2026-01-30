@@ -26,7 +26,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   final DashboardService _dashboardService = DashboardService();
   final RealtimeService _realtimeService = RealtimeService();
-  
+
   Map<String, dynamic>? _dashboardData;
   List<Map<String, dynamic>> _alerts = [];
   Map<String, int> _expiryBreakdown = {};
@@ -59,7 +59,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _realtimeService.subscribeToObligations();
     _obligationSubscription = _realtimeService.obligationStream.listen((data) {
       _loadDashboardData();
-      
+
       // Show alert for new obligation
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -90,11 +90,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
       final data = await _dashboardService.getDashboardOverview();
       final breakdown = await _dashboardService.getExpiryBreakdown();
-      final upcoming = await _dashboardService.getUpcomingObligations(daysAhead: 30);
+      final upcoming =
+          await _dashboardService.getUpcomingObligations(daysAhead: 30);
 
       // Generate alerts
       final alerts = <Map<String, dynamic>>[];
-      
+
       // Overdue obligations
       final overdue = data['obligations']['overdue'] as int? ?? 0;
       if (overdue > 0) {
@@ -368,17 +369,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
         const SizedBox(height: 24),
         Row(
           children: const [
-            Expanded(child: LoadingSkeleton(width: double.infinity, height: 120)),
+            Expanded(
+                child: LoadingSkeleton(width: double.infinity, height: 120)),
             SizedBox(width: 16),
-            Expanded(child: LoadingSkeleton(width: double.infinity, height: 120)),
+            Expanded(
+                child: LoadingSkeleton(width: double.infinity, height: 120)),
           ],
         ),
         const SizedBox(height: 16),
         Row(
           children: const [
-            Expanded(child: LoadingSkeleton(width: double.infinity, height: 120)),
+            Expanded(
+                child: LoadingSkeleton(width: double.infinity, height: 120)),
             SizedBox(width: 16),
-            Expanded(child: LoadingSkeleton(width: double.infinity, height: 120)),
+            Expanded(
+                child: LoadingSkeleton(width: double.infinity, height: 120)),
           ],
         ),
       ],
@@ -494,7 +499,9 @@ class _StatCard extends StatelessWidget {
           Text(
             title,
             style: AppTextStyles.bodySmall.copyWith(
-              color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondary,
+              color: isDark
+                  ? AppColors.textSecondaryDark
+                  : AppColors.textSecondary,
             ),
           ),
         ],
@@ -551,7 +558,9 @@ class _ActivityItem extends StatelessWidget {
           Text(
             _formatTime(timestamp),
             style: AppTextStyles.caption.copyWith(
-              color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondary,
+              color: isDark
+                  ? AppColors.textSecondaryDark
+                  : AppColors.textSecondary,
             ),
           ),
         ],

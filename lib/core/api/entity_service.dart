@@ -16,7 +16,7 @@ class EntityService {
           .eq('user_id', userId)
           .order('created_at', ascending: false);
 
-      return List<Map<String, dynamic>>.from(response );
+      return List<Map<String, dynamic>>.from(response);
     } catch (e) {
       throw Exception('Failed to load entities: $e');
     }
@@ -49,11 +49,11 @@ class EntityService {
           .order('due_date', ascending: true);
 
       // Get document count
-      
+
       return {
         'entity': entity,
         'documents': linkedDocs is List ? linkedDocs : [],
-        'obligations': obligations ,
+        'obligations': obligations,
       };
     } catch (e) {
       throw Exception('Failed to load entity details: $e');
@@ -70,13 +70,17 @@ class EntityService {
       final userId = _supabase.auth.currentUser?.id;
       if (userId == null) throw Exception('User not authenticated');
 
-      final response = await _supabase.from('life_entities').insert({
-        'user_id': userId,
-        'name': name,
-        'type': type,
-        'metadata': metadata ?? {},
-        'created_at': DateTime.now().toIso8601String(),
-      }).select().single();
+      final response = await _supabase
+          .from('life_entities')
+          .insert({
+            'user_id': userId,
+            'name': name,
+            'type': type,
+            'metadata': metadata ?? {},
+            'created_at': DateTime.now().toIso8601String(),
+          })
+          .select()
+          .single();
 
       return response as Map<String, dynamic>;
     } catch (e) {
@@ -172,14 +176,15 @@ class EntityService {
           .eq('type', type)
           .order('created_at', ascending: false);
 
-      return List<Map<String, dynamic>>.from(response );
+      return List<Map<String, dynamic>>.from(response);
     } catch (e) {
       throw Exception('Failed to load entities by type: $e');
     }
   }
 
   /// Check if document has linked entities
-  Future<List<Map<String, dynamic>>> getEntitiesForDocument(int documentId) async {
+  Future<List<Map<String, dynamic>>> getEntitiesForDocument(
+      int documentId) async {
     try {
       final userId = _supabase.auth.currentUser?.id;
       if (userId == null) throw Exception('User not authenticated');
@@ -193,9 +198,8 @@ class EntityService {
       if ((mappings as List).isEmpty) return [];
 
       // Get entity details
-      final entityIds = (mappings as List)
-          .map((m) => m['entity_id'] as int)
-          .toList();
+      final entityIds =
+          (mappings as List).map((m) => m['entity_id'] as int).toList();
 
       final entities = await _supabase
           .from('life_entities')

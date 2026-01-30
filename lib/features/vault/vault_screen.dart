@@ -45,7 +45,8 @@ class _VaultScreenState extends State<VaultScreen> {
 
       final biometricEnabled = await settingsService.isBiometricEnabled();
       final vaultExtraLock =
-          await settingsService.getPreference<bool>('vault_extra_lock') ?? false;
+          await settingsService.getPreference<bool>('vault_extra_lock') ??
+              false;
 
       if (biometricEnabled && vaultExtraLock) {
         final authenticated =
@@ -116,7 +117,7 @@ class _VaultScreenState extends State<VaultScreen> {
 
       // Upload to vault (modified upload to set is_vault = true)
       await _uploadVaultFile(file);
-      
+
       await _loadVaultItems();
 
       if (mounted) {
@@ -143,7 +144,8 @@ class _VaultScreenState extends State<VaultScreen> {
     final fileName = file.path.split('/').last;
     final fileSize = await file.length();
     final fileBytes = await file.readAsBytes();
-    final storagePath = 'vault/${user.id}/${DateTime.now().millisecondsSinceEpoch}_$fileName';
+    final storagePath =
+        'vault/${user.id}/${DateTime.now().millisecondsSinceEpoch}_$fileName';
 
     // Upload to storage
     await _supabase.storage
@@ -151,16 +153,20 @@ class _VaultScreenState extends State<VaultScreen> {
         .uploadBinary(storagePath, fileBytes);
 
     // Create vault document
-    final doc = await _supabase.from('documents').insert({
-      'user_id': user.id,
-      'title': fileName,
-      'file_type': fileName.split('.').last,
-      'file_size': fileSize,
-      'status': 'processing',
-      'processed': false,
-      'source': 'vault',
-      'is_vault': true, // Mark as vault document
-    }).select().single();
+    final doc = await _supabase
+        .from('documents')
+        .insert({
+          'user_id': user.id,
+          'title': fileName,
+          'file_type': fileName.split('.').last,
+          'file_size': fileSize,
+          'status': 'processing',
+          'processed': false,
+          'source': 'vault',
+          'is_vault': true, // Mark as vault document
+        })
+        .select()
+        .single();
 
     // Create job for OCR processing
     await _supabase.from('jobs').insert({
@@ -179,8 +185,7 @@ class _VaultScreenState extends State<VaultScreen> {
     try {
       await _supabase
           .from('documents')
-          .update({'is_vault': true})
-          .eq('id', documentId);
+          .update({'is_vault': true}).eq('id', documentId);
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -201,8 +206,7 @@ class _VaultScreenState extends State<VaultScreen> {
     try {
       await _supabase
           .from('documents')
-          .update({'is_vault': false})
-          .eq('id', documentId);
+          .update({'is_vault': false}).eq('id', documentId);
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -243,8 +247,7 @@ class _VaultScreenState extends State<VaultScreen> {
     try {
       await _supabase
           .from('documents')
-          .update({'is_deleted': true})
-          .eq('id', documentId);
+          .update({'is_deleted': true}).eq('id', documentId);
 
       _loadVaultItems();
 
@@ -331,9 +334,8 @@ class _VaultScreenState extends State<VaultScreen> {
           Icon(
             Icons.lock_outlined,
             size: 64,
-            color: isDark
-                ? AppColors.textSecondaryDark
-                : AppColors.textSecondary,
+            color:
+                isDark ? AppColors.textSecondaryDark : AppColors.textSecondary,
           ),
           const SizedBox(height: 16),
           const Text('Vault is empty', style: TextStyle(fontSize: 18)),

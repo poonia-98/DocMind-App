@@ -34,7 +34,8 @@ class _DocumentListScreenState extends State<DocumentListScreen> {
       setState(() => _isLoading = true);
       final response = await _supabase
           .from('documents')
-          .select('id, title, created_at, is_vault, file_size, status, processed')
+          .select(
+              'id, title, created_at, is_vault, file_size, status, processed')
           .eq('is_deleted', false)
           .eq('is_vault', false)
           .order('created_at', ascending: false)
@@ -131,9 +132,8 @@ class _DocumentListScreenState extends State<DocumentListScreen> {
           Icon(
             Icons.folder_outlined,
             size: 64,
-            color: isDark
-                ? AppColors.textSecondaryDark
-                : AppColors.textSecondary,
+            color:
+                isDark ? AppColors.textSecondaryDark : AppColors.textSecondary,
           ),
           const SizedBox(height: 16),
           const Text('No documents yet', style: TextStyle(fontSize: 18)),
@@ -224,8 +224,7 @@ class _DocumentCard extends StatelessWidget {
               Text(_formatDate(timestamp), style: AppTextStyles.caption),
               const SizedBox(height: 4),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
                   color: _getStatusColor().withOpacity(0.1),
                   borderRadius: BorderRadius.circular(4),

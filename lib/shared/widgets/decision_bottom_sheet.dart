@@ -45,7 +45,7 @@ class DecisionBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return Container(
       decoration: BoxDecoration(
         color: isDark ? AppColors.cardBackgroundDark : AppColors.cardBackground,
@@ -75,14 +75,18 @@ class DecisionBottomSheet extends StatelessWidget {
               Text(
                 title,
                 style: AppTextStyles.h2.copyWith(
-                  color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimary,
+                  color: isDark
+                      ? AppColors.textPrimaryDark
+                      : AppColors.textPrimary,
                 ),
               ),
               const SizedBox(height: 12),
               Text(
                 description,
                 style: AppTextStyles.bodyLarge.copyWith(
-                  color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondary,
+                  color: isDark
+                      ? AppColors.textSecondaryDark
+                      : AppColors.textSecondary,
                 ),
               ),
               const SizedBox(height: 32),
@@ -114,7 +118,9 @@ class DecisionBottomSheet extends StatelessWidget {
                   child: Text(
                     'Skip for Now',
                     style: AppTextStyles.bodyMedium.copyWith(
-                      color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondary,
+                      color: isDark
+                          ? AppColors.textSecondaryDark
+                          : AppColors.textSecondary,
                     ),
                   ),
                 ),

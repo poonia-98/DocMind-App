@@ -106,9 +106,7 @@ class _EntityDetectionPopupState extends State<EntityDetectionPopup> {
                     : AppColors.cardBackground,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: isDark
-                      ? AppColors.dividerDark
-                      : AppColors.divider,
+                  color: isDark ? AppColors.dividerDark : AppColors.divider,
                 ),
               ),
               child: Row(
@@ -281,9 +279,7 @@ class _EntityCard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: isDark
-            ? AppColors.cardBackgroundDark
-            : AppColors.cardBackground,
+        color: isDark ? AppColors.cardBackgroundDark : AppColors.cardBackground,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: isSelected

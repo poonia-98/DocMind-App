@@ -8,7 +8,6 @@ import '../chat/chat_screen.dart';
 
 import 'signup_screen.dart';
 
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -21,7 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final AuthService _authService = AuthService();
-  
+
   bool _isLoading = false;
   bool _obscurePassword = true;
   String? _errorMessage;
@@ -34,43 +33,42 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _handleLogin() async {
-  if (!_formKey.currentState!.validate()) return;
+    if (!_formKey.currentState!.validate()) return;
 
-  setState(() {
-    _isLoading = true;
-    _errorMessage = null;
-  });
-
-  try {
-    await _authService.login(
-      _emailController.text.trim(),
-      _passwordController.text,
-    );
-
-    if (!mounted) return;
-
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (_) => const ChatScreen()),
-    );
-  } catch (e) {
     setState(() {
-      _errorMessage = 'Invalid email or password';
+      _isLoading = true;
+      _errorMessage = null;
     });
-  } finally {
-    if (mounted) {
+
+    try {
+      await _authService.login(
+        _emailController.text.trim(),
+        _passwordController.text,
+      );
+
+      if (!mounted) return;
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const ChatScreen()),
+      );
+    } catch (e) {
       setState(() {
-        _isLoading = false;
+        _errorMessage = 'Invalid email or password';
       });
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -100,14 +98,18 @@ class _LoginScreenState extends State<LoginScreen> {
                 Text(
                   'Welcome Back',
                   style: AppTextStyles.h1.copyWith(
-                    color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimary,
+                    color: isDark
+                        ? AppColors.textPrimaryDark
+                        : AppColors.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   'Sign in to continue to Enterprise Vault',
                   style: AppTextStyles.bodyLarge.copyWith(
-                    color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondary,
+                    color: isDark
+                        ? AppColors.textSecondaryDark
+                        : AppColors.textSecondary,
                   ),
                 ),
                 const SizedBox(height: 48),
@@ -137,7 +139,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     prefixIcon: const Icon(Icons.lock_outlined),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                        _obscurePassword
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
                       ),
                       onPressed: () {
                         setState(() {
@@ -166,12 +170,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     child: Row(
                       children: [
-                        const Icon(Icons.error_outline, color: AppColors.error, size: 20),
+                        const Icon(Icons.error_outline,
+                            color: AppColors.error, size: 20),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
                             _errorMessage!,
-                            style: AppTextStyles.bodySmall.copyWith(color: AppColors.error),
+                            style: AppTextStyles.bodySmall
+                                .copyWith(color: AppColors.error),
                           ),
                         ),
                       ],
@@ -180,31 +186,31 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
 
                 // At end of build method, add:
-Center(
-  child: TextButton(
-    onPressed: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) => const SignupScreen()),
-      );
-    },
-    child: RichText(
-      text: TextSpan(
-        text: "Don't have an account? ",
-        style: AppTextStyles.bodyMedium,
-        children: [
-          TextSpan(
-            text: 'Sign Up',
-            style: TextStyle(
-              color: AppColors.accent,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
-      ),
-    ),
-  ),
-),
+                Center(
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const SignupScreen()),
+                      );
+                    },
+                    child: RichText(
+                      text: TextSpan(
+                        text: "Don't have an account? ",
+                        style: AppTextStyles.bodyMedium,
+                        children: [
+                          TextSpan(
+                            text: 'Sign Up',
+                            style: TextStyle(
+                              color: AppColors.accent,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 32),
                 PrimaryButton(
                   text: 'Sign In',

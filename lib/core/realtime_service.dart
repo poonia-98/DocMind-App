@@ -5,18 +5,25 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class RealtimeService {
   final _supabase = Supabase.instance.client;
   final _subscriptions = <String, RealtimeChannel>{};
-  
+
   // Stream controllers for real-time events
-  final _documentStatusController = StreamController<Map<String, dynamic>>.broadcast();
-  final _obligationController = StreamController<Map<String, dynamic>>.broadcast();
-  final _reminderController = StreamController<Map<String, dynamic>>.broadcast();
-  final _chatMessageController = StreamController<Map<String, dynamic>>.broadcast();
+  final _documentStatusController =
+      StreamController<Map<String, dynamic>>.broadcast();
+  final _obligationController =
+      StreamController<Map<String, dynamic>>.broadcast();
+  final _reminderController =
+      StreamController<Map<String, dynamic>>.broadcast();
+  final _chatMessageController =
+      StreamController<Map<String, dynamic>>.broadcast();
 
   // Public streams
-  Stream<Map<String, dynamic>> get documentStatusStream => _documentStatusController.stream;
-  Stream<Map<String, dynamic>> get obligationStream => _obligationController.stream;
+  Stream<Map<String, dynamic>> get documentStatusStream =>
+      _documentStatusController.stream;
+  Stream<Map<String, dynamic>> get obligationStream =>
+      _obligationController.stream;
   Stream<Map<String, dynamic>> get reminderStream => _reminderController.stream;
-  Stream<Map<String, dynamic>> get chatMessageStream => _chatMessageController.stream;
+  Stream<Map<String, dynamic>> get chatMessageStream =>
+      _chatMessageController.stream;
 
   /// Subscribe to document status changes
   /// Listens for: processing -> ready, or failed
@@ -37,7 +44,7 @@ class RealtimeService {
           ),
           callback: (payload) {
             final data = payload.newRecord;
-            
+
             // Only emit if status changed
             if (data['status'] == 'ready' || data['status'] == 'failed') {
               _documentStatusController.add({
@@ -106,11 +113,11 @@ class RealtimeService {
           ),
           callback: (payload) {
             final data = payload.newRecord;
-            
+
             // Only emit if reminder is due soon (within 1 hour)
             final remindAt = DateTime.parse(data['remind_at']);
             final now = DateTime.now();
-            
+
             if (remindAt.difference(now).inHours <= 1) {
               _reminderController.add({
                 'reminder_id': data['id'],
@@ -177,7 +184,7 @@ class RealtimeService {
           ),
           callback: (payload) {
             final data = payload.newRecord;
-            
+
             // Emit job status changes
             if (data['status'] == 'completed' || data['status'] == 'failed') {
               _documentStatusController.add({

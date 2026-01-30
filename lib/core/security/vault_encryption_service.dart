@@ -26,7 +26,8 @@ class VaultEncryptionService {
         await _generateAndStoreKeys();
       }
     } catch (e) {
-      throw VaultEncryptionException('Failed to initialize encryption keys: $e');
+      throw VaultEncryptionException(
+          'Failed to initialize encryption keys: $e');
     }
   }
 
@@ -35,7 +36,7 @@ class VaultEncryptionService {
     try {
       // Generate random 256-bit key
       final key = encrypt.Key.fromSecureRandom(32); // 256 bits
-      
+
       // Generate random IV (Initialization Vector)
       final iv = encrypt.IV.fromSecureRandom(16); // 128 bits
 
@@ -61,7 +62,7 @@ class VaultEncryptionService {
         await initializeKeys();
         return _getKey(); // Retry after initialization
       }
-      
+
       final keyBytes = base64Decode(keyString);
       return encrypt.Key(Uint8List.fromList(keyBytes));
     } catch (e) {
@@ -77,7 +78,7 @@ class VaultEncryptionService {
         await initializeKeys();
         return _getIV(); // Retry after initialization
       }
-      
+
       final ivBytes = base64Decode(ivString);
       return encrypt.IV(Uint8List.fromList(ivBytes));
     } catch (e) {
@@ -90,10 +91,11 @@ class VaultEncryptionService {
     try {
       final key = await _getKey();
       final iv = await _getIV();
-      
-      final encrypter = encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.cbc));
+
+      final encrypter =
+          encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.cbc));
       final encrypted = encrypter.encrypt(plainText, iv: iv);
-      
+
       return encrypted.base64;
     } catch (e) {
       throw VaultEncryptionException('Encryption failed: $e');
@@ -105,10 +107,11 @@ class VaultEncryptionService {
     try {
       final key = await _getKey();
       final iv = await _getIV();
-      
-      final encrypter = encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.cbc));
+
+      final encrypter =
+          encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.cbc));
       final decrypted = encrypter.decrypt64(encryptedText, iv: iv);
-      
+
       return decrypted;
     } catch (e) {
       throw VaultEncryptionException('Decryption failed: $e');
@@ -120,10 +123,11 @@ class VaultEncryptionService {
     try {
       final key = await _getKey();
       final iv = await _getIV();
-      
-      final encrypter = encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.cbc));
+
+      final encrypter =
+          encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.cbc));
       final encrypted = encrypter.encryptBytes(data.toList(), iv: iv);
-      
+
       return Uint8List.fromList(encrypted.bytes);
     } catch (e) {
       throw VaultEncryptionException('File encryption failed: $e');
@@ -135,13 +139,14 @@ class VaultEncryptionService {
     try {
       final key = await _getKey();
       final iv = await _getIV();
-      
-      final encrypter = encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.cbc));
+
+      final encrypter =
+          encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.cbc));
       final decrypted = encrypter.decryptBytes(
         encrypt.Encrypted(encryptedData),
         iv: iv,
       );
-      
+
       return Uint8List.fromList(decrypted);
     } catch (e) {
       throw VaultEncryptionException('File decryption failed: $e');

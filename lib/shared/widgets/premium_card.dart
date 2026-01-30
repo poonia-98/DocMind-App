@@ -19,7 +19,7 @@ class PremiumCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return Container(
       margin: margin ?? const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       decoration: BoxDecoration(

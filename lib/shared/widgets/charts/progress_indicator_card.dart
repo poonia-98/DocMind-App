@@ -85,9 +85,8 @@ class ProgressIndicatorCard extends StatelessWidget {
             child: LinearProgressIndicator(
               value: progress,
               minHeight: 12,
-              backgroundColor: isDark
-                  ? AppColors.dividerDark
-                  : AppColors.divider,
+              backgroundColor:
+                  isDark ? AppColors.dividerDark : AppColors.divider,
               valueColor: AlwaysStoppedAnimation<Color>(displayColor),
             ),
           ),
@@ -171,16 +170,14 @@ class CircularProgressCard extends StatelessWidget {
                 CircularProgressIndicator(
                   value: progress,
                   strokeWidth: 8,
-                  backgroundColor: isDark
-                      ? AppColors.dividerDark
-                      : AppColors.divider,
+                  backgroundColor:
+                      isDark ? AppColors.dividerDark : AppColors.divider,
                   valueColor: AlwaysStoppedAnimation<Color>(displayColor),
                 ),
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    if (icon != null)
-                      Icon(icon, color: displayColor, size: 20),
+                    if (icon != null) Icon(icon, color: displayColor, size: 20),
                     Text(
                       '$percentage%',
                       style: AppTextStyles.h3.copyWith(

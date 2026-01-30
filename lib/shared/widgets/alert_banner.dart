@@ -235,7 +235,8 @@ class AlertBannerList extends StatelessWidget {
           title: alert['title'] as String? ?? '',
           message: alert['message'] as String?,
           onTap: onAlertTap != null ? () => onAlertTap!(index) : null,
-          onDismiss: onAlertDismiss != null ? () => onAlertDismiss!(index) : null,
+          onDismiss:
+              onAlertDismiss != null ? () => onAlertDismiss!(index) : null,
         );
       }).toList(),
     );

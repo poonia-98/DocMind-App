@@ -43,7 +43,7 @@ class _EntitiesScreenState extends State<EntitiesScreen> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Life Entities'),
@@ -78,14 +78,18 @@ class _EntitiesScreenState extends State<EntitiesScreen> {
                       Icon(
                         Icons.health_and_safety_outlined,
                         size: 64,
-                        color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondary,
+                        color: isDark
+                            ? AppColors.textSecondaryDark
+                            : AppColors.textSecondary,
                       ),
                       const SizedBox(height: 16),
                       Text(
                         'No life entities yet',
                         style: TextStyle(
                           fontSize: 18,
-                          color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondary,
+                          color: isDark
+                              ? AppColors.textSecondaryDark
+                              : AppColors.textSecondary,
                         ),
                       ),
                     ],
@@ -152,7 +156,7 @@ class _EntityCard extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final statusColor = _getStatusColor(status);
     final isExpiring = _isExpiringSoon(expiryDate);
-    
+
     return PremiumCard(
       onTap: onTap,
       margin: const EdgeInsets.only(bottom: 12),
@@ -180,7 +184,8 @@ class _EntityCard extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600),
+                      style: AppTextStyles.bodyMedium
+                          .copyWith(fontWeight: FontWeight.w600),
                     ),
                     const SizedBox(height: 4),
                     Text(type, style: AppTextStyles.bodySmall),
@@ -188,7 +193,8 @@ class _EntityCard extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: statusColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
@@ -212,7 +218,9 @@ class _EntityCard extends StatelessWidget {
                   size: 16,
                   color: isExpiring
                       ? AppColors.warning
-                      : (isDark ? AppColors.textSecondaryDark : AppColors.textSecondary),
+                      : (isDark
+                          ? AppColors.textSecondaryDark
+                          : AppColors.textSecondary),
                 ),
                 const SizedBox(width: 8),
                 Text(

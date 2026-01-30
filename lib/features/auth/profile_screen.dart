@@ -96,8 +96,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const SizedBox(height: 20),
                       _InfoRow(
                         label: 'Name',
-                        value:
-                            _user?.userMetadata?['name'] ?? 'N/A',
+                        value: _user?.userMetadata?['name'] ?? 'N/A',
                       ),
                       const SizedBox(height: 16),
                       _InfoRow(
@@ -137,17 +136,14 @@ class _InfoRow extends StatelessWidget {
         Text(
           label,
           style: AppTextStyles.bodyMedium.copyWith(
-            color: isDark
-                ? AppColors.textSecondaryDark
-                : AppColors.textSecondary,
+            color:
+                isDark ? AppColors.textSecondaryDark : AppColors.textSecondary,
           ),
         ),
         Text(
           value,
           style: AppTextStyles.bodyMedium.copyWith(
-            color: isDark
-                ? AppColors.textPrimaryDark
-                : AppColors.textPrimary,
+            color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimary,
             fontWeight: FontWeight.w600,
           ),
         ),

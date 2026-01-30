@@ -146,7 +146,7 @@ class _ChatScreenState extends State<ChatScreen> {
       // If chat is for a specific document, get that document's content
       if (widget.documentId != null) {
         print('📄 Fetching content for document ${widget.documentId}...');
-        
+
         final sections = await _supabase
             .from('document_sections')
             .select('content')
@@ -158,18 +158,19 @@ class _ChatScreenState extends State<ChatScreen> {
               .map((s) => s['content'] as String)
               .where((c) => c.isNotEmpty && c != '[NO TEXT EXTRACTED]')
               .join('\n\n');
-          
-          print('✅ Got ${sections.length} sections, total ${context.length} chars');
+
+          print(
+              '✅ Got ${sections.length} sections, total ${context.length} chars');
         } else {
           print('⚠️ No sections found for document');
         }
       } else {
         // General chat - try to get context from embeddings
         print('🔍 Searching all documents using embeddings...');
-        
+
         try {
           final questionEmbedding = await generateEmbedding(message);
-          
+
           final result = await _supabase.rpc(
             'ai_context_from_question',
             params: {
@@ -193,14 +194,17 @@ class _ChatScreenState extends State<ChatScreen> {
       String userPrompt;
 
       if (context.isNotEmpty) {
-        systemPrompt = 'You are a helpful assistant. Answer questions based ONLY on the provided document content. If the answer is not in the documents, say so clearly.';
+        systemPrompt =
+            'You are a helpful assistant. Answer questions based ONLY on the provided document content. If the answer is not in the documents, say so clearly.';
         userPrompt = 'DOCUMENT CONTENT:\n$context\n\nQUESTION: $message';
       } else {
-        systemPrompt = 'You are a helpful assistant. Have a natural conversation with the user.';
+        systemPrompt =
+            'You are a helpful assistant. Have a natural conversation with the user.';
         userPrompt = message;
       }
 
-      print('🤖 Calling AI with ${context.isEmpty ? "no" : context.length.toString() + " chars of"} context...');
+      print(
+          '🤖 Calling AI with ${context.isEmpty ? "no" : context.length.toString() + " chars of"} context...');
 
       final response = await http.post(
         Uri.parse('https://models.inference.ai.azure.com/chat/completions'),
@@ -220,7 +224,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        final aiText = data['choices'][0]['message']['content'] ?? 'No response';
+        final aiText =
+            data['choices'][0]['message']['content'] ?? 'No response';
         print('✅ AI responded: ${aiText.length} chars');
         return aiText;
       } else {

@@ -27,14 +27,12 @@ class _ObligationsScreenState extends State<ObligationsScreen> {
 
   Future<void> _loadObligations() async {
     try {
-      final response =
-          await _apiClient.get('life-entities/obligations');
+      final response = await _apiClient.get('life-entities/obligations');
 
       setState(() {
-        _obligations =
-            List<Map<String, dynamic>>.from(
-              response['obligations'] ?? [],
-            );
+        _obligations = List<Map<String, dynamic>>.from(
+          response['obligations'] ?? [],
+        );
         _isLoading = false;
       });
     } catch (_) {
@@ -44,8 +42,7 @@ class _ObligationsScreenState extends State<ObligationsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark =
-        Theme.of(context).brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       appBar: AppBar(
@@ -61,24 +58,14 @@ class _ObligationsScreenState extends State<ObligationsScreen> {
                     padding: const EdgeInsets.all(20),
                     itemCount: _obligations.length,
                     itemBuilder: (context, index) {
-                      final obligation =
-                          _obligations[index];
+                      final obligation = _obligations[index];
 
                       return _ObligationCard(
-                        title:
-                            obligation['title'] ??
-                                'Untitled',
-                        description:
-                            obligation['description'] ??
-                                '',
-                        dueDate:
-                            obligation['dueDate'],
-                        status:
-                            obligation['status'] ??
-                                'pending',
-                        priority:
-                            obligation['priority'] ??
-                                'medium',
+                        title: obligation['title'] ?? 'Untitled',
+                        description: obligation['description'] ?? '',
+                        dueDate: obligation['dueDate'],
+                        status: obligation['status'] ?? 'pending',
+                        priority: obligation['priority'] ?? 'medium',
                         onTap: () {},
                       );
                     },
@@ -95,9 +82,8 @@ class _ObligationsScreenState extends State<ObligationsScreen> {
           Icon(
             Icons.assignment_outlined,
             size: 64,
-            color: isDark
-                ? AppColors.textSecondaryDark
-                : AppColors.textSecondary,
+            color:
+                isDark ? AppColors.textSecondaryDark : AppColors.textSecondary,
           ),
           const SizedBox(height: 16),
           Text(
@@ -119,13 +105,11 @@ class _ObligationsScreenState extends State<ObligationsScreen> {
       padding: const EdgeInsets.all(20),
       itemCount: 5,
       itemBuilder: (_, __) => Padding(
-        padding:
-            const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.only(bottom: 12),
         child: LoadingSkeleton(
           width: double.infinity,
           height: 100,
-          borderRadius:
-              BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(16),
         ),
       ),
     );
@@ -153,20 +137,16 @@ class _ObligationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark =
-        Theme.of(context).brightness ==
-            Brightness.dark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    final priorityColor =
-        _getPriorityColor(priority);
+    final priorityColor = _getPriorityColor(priority);
     final isOverdue = _isOverdue(dueDate);
 
     return PremiumCard(
       onTap: onTap,
       margin: const EdgeInsets.only(bottom: 12),
       child: Column(
-        crossAxisAlignment:
-            CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
@@ -175,59 +155,46 @@ class _ObligationCard extends StatelessWidget {
                 height: 40,
                 decoration: BoxDecoration(
                   color: priorityColor,
-                  borderRadius:
-                      BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(2),
                 ),
               ),
               const SizedBox(width: 16),
               Expanded(
                 child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       title,
-                      style: AppTextStyles
-                          .bodyMedium
-                          .copyWith(
-                        fontWeight:
-                            FontWeight.w600,
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                     if (description.isNotEmpty) ...[
                       const SizedBox(height: 4),
                       Text(
                         description,
-                        style: AppTextStyles
-                            .bodySmall,
+                        style: AppTextStyles.bodySmall,
                         maxLines: 2,
-                        overflow:
-                            TextOverflow.ellipsis,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ],
                 ),
               ),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   horizontal: 8,
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color:
-                      priorityColor.withOpacity(
-                          0.1),
-                  borderRadius:
-                      BorderRadius.circular(6),
+                  color: priorityColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
                   priority.toUpperCase(),
-                  style: AppTextStyles.caption
-                      .copyWith(
+                  style: AppTextStyles.caption.copyWith(
                     color: priorityColor,
-                    fontWeight:
-                        FontWeight.w600,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
@@ -238,28 +205,21 @@ class _ObligationCard extends StatelessWidget {
             Row(
               children: [
                 Icon(
-                  isOverdue
-                      ? Icons.error_outline
-                      : Icons.schedule,
+                  isOverdue ? Icons.error_outline : Icons.schedule,
                   size: 16,
                   color: isOverdue
                       ? AppColors.error
                       : (isDark
-                          ? AppColors
-                              .textSecondaryDark
-                          : AppColors
-                              .textSecondary),
+                          ? AppColors.textSecondaryDark
+                          : AppColors.textSecondary),
                 ),
                 const SizedBox(width: 8),
                 Text(
                   isOverdue
                       ? 'Overdue: ${_formatDate(dueDate!)}'
                       : 'Due: ${_formatDate(dueDate!)}',
-                  style: AppTextStyles.bodySmall
-                      .copyWith(
-                    color: isOverdue
-                        ? AppColors.error
-                        : null,
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: isOverdue ? AppColors.error : null,
                   ),
                 ),
               ],
@@ -286,8 +246,7 @@ class _ObligationCard extends StatelessWidget {
   bool _isOverdue(String? date) {
     if (date == null) return false;
     try {
-      final due =
-          DateTime.parse(date);
+      final due = DateTime.parse(date);
       return due.isBefore(DateTime.now());
     } catch (_) {
       return false;
