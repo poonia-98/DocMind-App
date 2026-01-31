@@ -2,14 +2,15 @@
 import 'package:local_auth/local_auth.dart';
 import 'package:flutter/services.dart';
 
-/// Production-ready biometric authentication service
-/// Supports: Face ID (iOS), Touch ID (iOS), Fingerprint (Android)
-/// FULLY WIRED - No fake implementations
+
 class BiometricService {
   final LocalAuthentication _localAuth = LocalAuthentication();
 
-  /// Check if device supports biometric authentication
-  Future<bool> isDeviceSupported() async {
+  
+  Future<bool> isDeviceSupported()
+  
+  
+   async {
     try {
       return await _localAuth.isDeviceSupported();
     } catch (e) {
@@ -17,8 +18,11 @@ class BiometricService {
     }
   }
 
-  /// Check if biometrics are available (enrolled)
-  Future<bool> canCheckBiometrics() async {
+  
+  Future<bool> canCheckBiometrics() 
+  
+  
+  async {
     try {
       return await _localAuth.canCheckBiometrics;
     } catch (e) {
@@ -26,7 +30,7 @@ class BiometricService {
     }
   }
 
-  /// Get available biometric types on device
+ 
   Future<List<BiometricType>> getAvailableBiometrics() async {
     try {
       return await _localAuth.getAvailableBiometrics();

@@ -7,6 +7,7 @@ class PremiumCard extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final EdgeInsetsGeometry? margin;
   final VoidCallback? onTap;
+  final Color? color;
 
   const PremiumCard({
     super.key,
@@ -14,6 +15,7 @@ class PremiumCard extends StatelessWidget {
     this.padding,
     this.margin,
     this.onTap,
+    this.color,
   });
 
   @override
@@ -23,7 +25,10 @@ class PremiumCard extends StatelessWidget {
     return Container(
       margin: margin ?? const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.cardBackgroundDark : AppColors.cardBackground,
+        color: color ??
+            (isDark
+                ? AppColors.cardBackgroundDark
+                : AppColors.cardBackground),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(

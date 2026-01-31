@@ -1,10 +1,10 @@
-// lib/core/api/entity_service.dart
+//entity_service.dart
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class EntityService {
   final _supabase = Supabase.instance.client;
 
-  /// Get all life entities for current user
+  
   Future<List<Map<String, dynamic>>> getAllEntities() async {
     try {
       final userId = _supabase.auth.currentUser?.id;
@@ -22,13 +22,13 @@ class EntityService {
     }
   }
 
-  /// Get entity with all linked documents and obligations
+  
   Future<Map<String, dynamic>> getEntityDetails(int entityId) async {
     try {
       final userId = _supabase.auth.currentUser?.id;
       if (userId == null) throw Exception('User not authenticated');
 
-      // Get entity
+      
       final entity = await _supabase
           .from('life_entities')
           .select('*')
@@ -36,11 +36,11 @@ class EntityService {
           .eq('user_id', userId)
           .single();
 
-      // Get linked documents using RPC function
+      
       final linkedDocs = await _supabase
           .rpc('get_entity_with_documents', params: {'p_entity_id': entityId});
 
-      // Get obligations for this entity
+      
       final obligations = await _supabase
           .from('obligations')
           .select('*')
@@ -48,7 +48,7 @@ class EntityService {
           .eq('user_id', userId)
           .order('due_date', ascending: true);
 
-      // Get document count
+      
 
       return {
         'entity': entity,
@@ -60,7 +60,7 @@ class EntityService {
     }
   }
 
-  /// Create new life entity
+ 
   Future<Map<String, dynamic>> createEntity({
     required String name,
     required String type,
@@ -88,8 +88,10 @@ class EntityService {
     }
   }
 
-  /// Update entity
-  Future<void> updateEntity(int entityId, Map<String, dynamic> updates) async {
+  
+  Future<void> updateEntity(int entityId, Map<String, dynamic> updates)
+  
+   async {
     try {
       final userId = _supabase.auth.currentUser?.id;
       if (userId == null) throw Exception('User not authenticated');
@@ -103,12 +105,15 @@ class EntityService {
           .eq('id', entityId)
           .eq('user_id', userId);
     } catch (e) {
+
       throw Exception('Failed to update entity: $e');
     }
   }
 
-  /// Delete entity
-  Future<void> deleteEntity(int entityId) async {
+  
+  Future<void> deleteEntity(int entityId) 
+  
+  async {
     try {
       final userId = _supabase.auth.currentUser?.id;
       if (userId == null) throw Exception('User not authenticated');
@@ -123,13 +128,15 @@ class EntityService {
     }
   }
 
-  /// Link document to entity
+  
   Future<void> linkDocumentToEntity({
     required int documentId,
     required int entityId,
     double? confidence,
     Map<String, dynamic>? extractedData,
-  }) async {
+  })
+  
+   async {
     try {
       final userId = _supabase.auth.currentUser?.id;
       if (userId == null) throw Exception('User not authenticated');
@@ -146,8 +153,10 @@ class EntityService {
     }
   }
 
-  /// Unlink document from entity
-  Future<void> unlinkDocumentFromEntity(int documentId, int entityId) async {
+  
+  Future<void> unlinkDocumentFromEntity(int documentId, int entityId) 
+  
+  async {
     try {
       final userId = _supabase.auth.currentUser?.id;
       if (userId == null) throw Exception('User not authenticated');
@@ -163,8 +172,10 @@ class EntityService {
     }
   }
 
-  /// Get entities by type
-  Future<List<Map<String, dynamic>>> getEntitiesByType(String type) async {
+  
+  Future<List<Map<String, dynamic>>> getEntitiesByType(String type) 
+  
+  async {
     try {
       final userId = _supabase.auth.currentUser?.id;
       if (userId == null) throw Exception('User not authenticated');
@@ -182,7 +193,7 @@ class EntityService {
     }
   }
 
-  /// Check if document has linked entities
+  ///  linked entities check yha
   Future<List<Map<String, dynamic>>> getEntitiesForDocument(
       int documentId) async {
     try {
@@ -197,7 +208,7 @@ class EntityService {
 
       if ((mappings as List).isEmpty) return [];
 
-      // Get entity details
+      
       final entityIds =
           (mappings as List).map((m) => m['entity_id'] as int).toList();
 
@@ -207,7 +218,7 @@ class EntityService {
           .eq('user_id', userId)
           .inFilter('id', entityIds);
 
-      // Merge confidence data
+      
       final result = <Map<String, dynamic>>[];
       for (var entity in (entities as List)) {
         final mapping = (mappings as List).firstWhere(
@@ -226,7 +237,7 @@ class EntityService {
     }
   }
 
-  /// Get entity extraction log for document
+  /// extrction log doc ke liye
   Future<Map<String, dynamic>?> getExtractionLog(int documentId) async {
     try {
       final userId = _supabase.auth.currentUser?.id;

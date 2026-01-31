@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+
 import 'core/config.dart';
 import 'core/security/vault_encryption_service.dart';
 import 'features/settings/settings_service.dart';

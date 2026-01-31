@@ -23,7 +23,6 @@ class ApiClient {
   final _supabase = Supabase.instance.client;
   final _embeddingService = EmbeddingService();
 
-  static const int QUEUE_THRESHOLD = 5 * 1024 * 1024;
 
   Future<Map<String, String>> _getHeaders() async {
     final token = await _authService.getToken();
@@ -37,48 +36,7 @@ class ApiClient {
     };
   }
 
-  Future<dynamic> get(String endpoint,
-      {Map<String, String>? queryParams}) async {
-    final headers = await _getHeaders();
-    var uri = Uri.parse('${AppConfig.supabaseUrl}/api/$endpoint');
-    if (queryParams != null && queryParams.isNotEmpty) {
-      uri = uri.replace(queryParameters: queryParams);
-    }
-    final response =
-        await http.get(uri, headers: headers).timeout(AppConfig.requestTimeout);
-    return _handleResponse(response);
-  }
-
-  Future<dynamic> post(String endpoint, Map<String, dynamic> data) async {
-    final headers = await _getHeaders();
-    final uri = Uri.parse('${AppConfig.supabaseUrl}/api/$endpoint');
-    final response = await http
-        .post(uri, headers: headers, body: json.encode(data))
-        .timeout(AppConfig.requestTimeout);
-    return _handleResponse(response);
-  }
-
-  Future<dynamic> put(String endpoint, Map<String, dynamic> data) async {
-    final headers = await _getHeaders();
-    final uri = Uri.parse('${AppConfig.supabaseUrl}/api/$endpoint');
-    final response = await http
-        .put(uri, headers: headers, body: json.encode(data))
-        .timeout(AppConfig.requestTimeout);
-    return _handleResponse(response);
-  }
-
-  Future<dynamic> delete(String endpoint,
-      {Map<String, String>? queryParams}) async {
-    final headers = await _getHeaders();
-    var uri = Uri.parse('${AppConfig.supabaseUrl}/api/$endpoint');
-    if (queryParams != null && queryParams.isNotEmpty) {
-      uri = uri.replace(queryParameters: queryParams);
-    }
-    final response = await http
-        .delete(uri, headers: headers)
-        .timeout(AppConfig.requestTimeout);
-    return _handleResponse(response);
-  }
+  
 
   Future<dynamic> uploadFile(File file) async {
     final user = _supabase.auth.currentUser;
@@ -146,12 +104,11 @@ class ApiClient {
     }
   }
 
-  //  BACKGROUND EMBEDDING GENERATION
+  //  BACKGROUND EMBEDDING GENERATION - FIXED
   Future<void> _generateEmbeddingsInBackground(int documentId) async {
     try {
       print('⏳ Waiting for document $documentId to finish processing...');
 
-      // Wait for OCR processing to complete (max 60 seconds)
       for (int i = 0; i < 60; i++) {
         await Future.delayed(const Duration(seconds: 1));
 
@@ -162,46 +119,126 @@ class ApiClient {
             .single();
 
         if (doc['status'] == 'ready' && doc['processed'] == true) {
-          print(
-              '📄 Document $documentId processing complete, generating embeddings...');
+          print('📄 OCR done for document $documentId');
 
-          // Generate embeddings for all sections
-          await _embeddingService.addEmbeddingsToDocument(documentId);
+          final user = _supabase.auth.currentUser;
+          if (user == null) return;
 
-          print('✅ Embeddings generated successfully for document $documentId');
+          // 1️⃣ FETCH DETECTED ENTITIES (created by worker.py)
+          final List detectedEntities = await _supabase
+              .from('detected_entities')
+              .select()
+              .eq('document_id', documentId);
+
+          print('🔍 Found ${detectedEntities.length} detected entities');
+
+          for (final e in detectedEntities) {
+            try {
+              // 2️⃣ CREATE LIFE ENTITY
+              final entity = await _supabase
+                  .from('life_entities')
+                  .insert({
+                    'user_id': user.id,
+                    'name': e['name'],
+                    'type': e['type'],
+                    'metadata': e['metadata'] ?? {},
+                  })
+                  .select()
+                  .single();
+
+              print('✅ Created life entity: ${entity['name']}');
+
+              // 3️⃣ UPDATE detected_entity with entity_id
+              await _supabase
+                  .from('detected_entities')
+                  .update({
+                    'converted_to_entity': true,
+                    'entity_id': entity['id'],
+                  })
+                  .eq('id', e['id']);
+
+              // 4️⃣ OBLIGATION (if expiry exists)
+              final metadata = e['metadata'] as Map<String, dynamic>?;
+              final expiry = metadata?['expiry_date'];
+              
+              if (expiry != null) {
+                try {
+                  final due = DateTime.parse(expiry);
+
+                  final obligation = await _supabase
+                      .from('obligations')
+                      .insert({
+                        'user_id': user.id,
+                        'entity_id': entity['id'],
+                        'title': 'Renew ${entity['name']}',
+                        'type': 'renewal',
+                        'due_date': due.toIso8601String().split('T')[0], // Date only
+                        'status': 'pending',
+                      })
+                      .select()
+                      .single();
+
+                  print('✅ Created obligation: ${obligation['title']}');
+
+                  // 5️⃣ REMINDERS (14 days and 3 days before)
+                  final remindAt14 = due.subtract(const Duration(days: 14));
+                  final remindAt3 = due.subtract(const Duration(days: 3));
+
+                  await _supabase.from('reminders').insert([
+                    {
+                      'user_id': user.id,
+                      'obligation_id': obligation['id'],
+                      'title': '⏰ Reminder: ${entity['name']} expires in 14 days',
+                      'remind_at': remindAt14.toIso8601String(),
+                      'type': 'expiry',
+                    },
+                    {
+                      'user_id': user.id,
+                      'obligation_id': obligation['id'],
+                      'title': '🚨 Urgent: ${entity['name']} expires in 3 days',
+                      'remind_at': remindAt3.toIso8601String(),
+                      'type': 'expiry',
+                    }
+                  ]);
+
+                  print('✅ Created 2 reminders for ${entity['name']}');
+                } catch (dateError) {
+                  print('⚠️ Failed to parse expiry date: $expiry');
+                }
+              }
+            } catch (entityError) {
+              print('❌ Failed to process entity: $entityError');
+            }
+          }
+
+          // 6️⃣ EMBEDDINGS (LAST STEP)
+          try {
+            await _embeddingService.addEmbeddingsToDocument(documentId);
+            print('✅ Added embeddings for document $documentId');
+          } catch (embError) {
+            print('⚠️ Embedding generation failed: $embError');
+          }
+
+          print('✅ LifeOS pipeline complete for document $documentId');
           return;
         }
 
         if (doc['status'] == 'failed') {
-          print(
-              '❌ Document $documentId processing failed, skipping embeddings');
+          print('❌ OCR failed for document $documentId');
           return;
         }
       }
 
-      print('⚠️ Timeout waiting for document $documentId processing');
+      print('⚠️ OCR timeout for document $documentId');
     } catch (e) {
-      print('❌ Error generating embeddings for document $documentId: $e');
+      print('❌ LifeOS pipeline error: $e');
     }
   }
 
-  // --- HELPER METHODS ---
 
-  List<String> _createChunks(String text, int wordsPerChunk) {
-    if (text.isEmpty) return [];
+  
 
-    // Extra spaces saaf karo aur split karo
-    List<String> words = text.trim().split(RegExp(r'\s+'));
-    List<String> chunks = [];
-
-    for (var i = 0; i < words.length; i += wordsPerChunk) {
-      int end =
-          (i + wordsPerChunk < words.length) ? i + wordsPerChunk : words.length;
-      chunks.add(words.sublist(i, end).join(' '));
-    }
-
-    return chunks;
-  }
+  
 
   dynamic _handleResponse(http.Response response) {
     if (response.statusCode >= 200 && response.statusCode < 300) {
@@ -212,6 +249,7 @@ class ApiClient {
   }
 
   void dispose() {
-    // Cleaner disposal
-  }
+    
+}
+
 }
