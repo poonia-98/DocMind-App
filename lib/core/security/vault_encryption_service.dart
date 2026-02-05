@@ -1,14 +1,11 @@
-// lib/core/security/vault_encryption_service.dart
+
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:crypto/crypto.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-/// Production-ready vault encryption service
-/// Uses AES-256-CBC encryption for document security
-/// Keys stored in secure device storage
-/// FULLY WIRED - Real encryption, not fake
+
 class VaultEncryptionService {
   static const _secureStorage = FlutterSecureStorage();
   static const _keyStorageKey = 'vault_master_key';
@@ -166,7 +163,7 @@ class VaultEncryptionService {
     return actualHash == expectedHash;
   }
 
-  /// Reset encryption keys (WARNING: All encrypted data will be lost)
+  /// Reset encryption keys 
   Future<void> resetKeys() async {
     try {
       await _secureStorage.delete(key: _keyStorageKey);
@@ -177,7 +174,7 @@ class VaultEncryptionService {
     }
   }
 
-  /// Delete all encryption keys (for account deletion)
+  /// Delete all encryption keys 
   Future<void> deleteKeys() async {
     try {
       await _secureStorage.delete(key: _keyStorageKey);
@@ -187,7 +184,7 @@ class VaultEncryptionService {
     }
   }
 
-  /// Check if vault is encrypted (keys exist)
+  /// Check if vault is encrypted 
   Future<bool> isVaultEncrypted() async {
     try {
       final keyExists = await _secureStorage.read(key: _keyStorageKey);

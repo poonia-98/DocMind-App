@@ -1,4 +1,4 @@
-// lib/core/config.dart
+
 class AppConfig {
   // Supabase Configuration
   static const String supabaseUrl =
@@ -15,7 +15,7 @@ class AppConfig {
       String.fromEnvironment('GEMINI_API_KEY');
 
 
-  // Optional: GitHub Token for AI (if you want AI chat)
+  
   static const String githubToken =
       String.fromEnvironment('GITHUB_TOKEN');
 

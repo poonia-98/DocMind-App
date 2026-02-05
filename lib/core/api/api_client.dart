@@ -104,7 +104,7 @@ class ApiClient {
     }
   }
 
-  //  BACKGROUND EMBEDDING GENERATION - FIXED
+  //  BACKGROUND EMBEDDING GENERATION 
   Future<void> _generateEmbeddingsInBackground(int documentId) async {
     try {
       print('⏳ Waiting for document $documentId to finish processing...');
@@ -124,7 +124,7 @@ class ApiClient {
           final user = _supabase.auth.currentUser;
           if (user == null) return;
 
-          // 1️⃣ FETCH DETECTED ENTITIES (created by worker.py)
+          // 1️ FETCH DETECTED ENTITIES 
           final List detectedEntities = await _supabase
               .from('detected_entities')
               .select()
@@ -134,7 +134,7 @@ class ApiClient {
 
           for (final e in detectedEntities) {
             try {
-              // 2️⃣ CREATE LIFE ENTITY
+              // 2️ CREATE LIFE ENTITY
               final entity = await _supabase
                   .from('life_entities')
                   .insert({
@@ -148,7 +148,7 @@ class ApiClient {
 
               print('✅ Created life entity: ${entity['name']}');
 
-              // 3️⃣ UPDATE detected_entity with entity_id
+              // 3️ UPDATE detected_entity with entity_id
               await _supabase
                   .from('detected_entities')
                   .update({
@@ -157,7 +157,7 @@ class ApiClient {
                   })
                   .eq('id', e['id']);
 
-              // 4️⃣ OBLIGATION (if expiry exists)
+              // 4️ OBLIGATION (if expiry exists)
               final metadata = e['metadata'] as Map<String, dynamic>?;
               final expiry = metadata?['expiry_date'];
               
@@ -180,7 +180,7 @@ class ApiClient {
 
                   print('✅ Created obligation: ${obligation['title']}');
 
-                  // 5️⃣ REMINDERS (14 days and 3 days before)
+                  // 5️ REMINDERS (14 days and 3 days before)
                   final remindAt14 = due.subtract(const Duration(days: 14));
                   final remindAt3 = due.subtract(const Duration(days: 3));
 
@@ -211,7 +211,7 @@ class ApiClient {
             }
           }
 
-          // 6️⃣ EMBEDDINGS (LAST STEP)
+          // 6️ EMBEDDINGS (LAST STEP)
           try {
             await _embeddingService.addEmbeddingsToDocument(documentId);
             print('✅ Added embeddings for document $documentId');

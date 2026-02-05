@@ -1,20 +1,9 @@
-// lib/shared/widgets/depth_icon.dart
+
 
 import 'package:flutter/material.dart';
 import '../theme/depth_icon_colors.dart';
 
-/// A premium, enterprise-grade icon widget that renders Material [IconData]
-/// with colour depth via [ShaderMask] gradient fills and a soft ambient glow
-/// layered underneath.  No image assets required — pure widget composition.
-///
-/// Usage:
-/// ```dart
-/// DepthIcon(
-///   Icons.notifications_active,
-///   preset: DepthIconColors.notification,
-///   size: 28,
-/// )
-/// ```
+
 class DepthIcon extends StatelessWidget {
   /// The [IconData] to render (e.g. [Icons.notifications_active]).
   final IconData icon;
@@ -53,7 +42,7 @@ class DepthIcon extends StatelessWidget {
     Widget core = Stack(
       alignment: Alignment.center,
       children: [
-        // ── Ambient glow ──────────────────────────────────
+        
         Container(
           width: effectiveGlowRadius * 2,
           height: effectiveGlowRadius * 2,
@@ -70,7 +59,7 @@ class DepthIcon extends StatelessWidget {
             ],
           ),
         ),
-        // ── Gradient-filled icon ──────────────────────────
+        
         ShaderMask(
           shaderCallback: (Rect bounds) {
             return preset.gradient.createShader(

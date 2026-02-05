@@ -1,11 +1,4 @@
-// lib/features/chat/camera_scan_screen.dart
-//
-// FIXED VERSION – proper camera view + manual/auto capture modes
-//
-// Features:
-// - Manual mode: User taps to capture
-// - Auto mode: Detects document edges + stillness + clarity → auto-captures
-//
+
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
@@ -31,19 +24,19 @@ class CameraScanScreen extends StatefulWidget {
 
 class _CameraScanScreenState extends State<CameraScanScreen>
     with WidgetsBindingObserver {
-  // ── camera state ──────────────────────────────────────────────────────────
+  
   List<CameraDescription> _cameras = [];
   CameraController? _controller;
   int _selectedCameraIndex = 0;
   bool _cameraReady = false;
 
-  // ── capture modes ─────────────────────────────────────────────────────────
+  
   CaptureMode _captureMode = CaptureMode.manual;
   bool _isCapturing = false;
   bool _isSending = false;
   String? _errorMessage;
 
-  // ── auto-capture state ────────────────────────────────────────────────────
+  
   Timer? _autoCaptureTicker;
   bool _isDocumentDetected = false;
   bool _isStill = false;
@@ -51,12 +44,12 @@ class _CameraScanScreenState extends State<CameraScanScreen>
   int _stillFrameCount = 0;
   Uint8List? _lastFrame;
 
-  // ── thresholds ────────────────────────────────────────────────────────────
+  
   static const int _stillFramesRequired = 3; // 3 stable frames
   static const double _blurThreshold = 100.0; // Lower = blurrier
   static const double _motionThreshold = 15.0; // Pixel difference threshold
 
-  // ── lifecycle ─────────────────────────────────────────────────────────────
+  
   @override
   void initState() {
     super.initState();
@@ -84,7 +77,7 @@ class _CameraScanScreenState extends State<CameraScanScreen>
     }
   }
 
-  // ── camera init ───────────────────────────────────────────────────────────
+  
   Future<void> _initCameras() async {
     try {
       _cameras = await availableCameras();
@@ -131,7 +124,7 @@ class _CameraScanScreenState extends State<CameraScanScreen>
     await _initCamera(_cameras[_selectedCameraIndex]);
   }
 
-  // ── mode switching ────────────────────────────────────────────────────────
+  
   void _toggleCaptureMode() {
     setState(() {
       _captureMode = _captureMode == CaptureMode.manual
@@ -146,7 +139,7 @@ class _CameraScanScreenState extends State<CameraScanScreen>
     });
   }
 
-  // ── auto-capture logic ────────────────────────────────────────────────────
+  
   void _startAutoCapture() {
     _stopAutoCapture();
     
@@ -288,7 +281,7 @@ class _CameraScanScreenState extends State<CameraScanScreen>
     }
   }
 
-  // ── manual capture ────────────────────────────────────────────────────────
+  
   Future<void> _captureAndScan({Uint8List? imageBytes}) async {
     if (_controller == null || !_controller!.value.isInitialized) return;
     if (_isCapturing || _isSending) return;
@@ -364,7 +357,7 @@ class _CameraScanScreenState extends State<CameraScanScreen>
     });
   }
 
-  // ── build ─────────────────────────────────────────────────────────────────
+  
   @override
   Widget build(BuildContext context) {
     if (_errorMessage != null || !_cameraReady || _controller == null) {
@@ -380,7 +373,7 @@ class _CameraScanScreenState extends State<CameraScanScreen>
   Widget _buildCameraBody() {
     return Stack(
       children: [
-        // ✅ FIXED: Proper camera preview without zoom
+        //  Proper camera preview without zoom
         Positioned.fill(
           child: Center(
             child: AspectRatio(

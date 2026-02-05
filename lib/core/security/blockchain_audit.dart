@@ -1,46 +1,13 @@
-// lib/core/security/blockchain_audit.dart
+
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-/// Production-ready blockchain audit trail for document integrity
-///
-/// PURPOSE:
-/// - Create immutable record of document state
-/// - Detect unauthorized modifications
-/// - Provide cryptographic proof of document authenticity
-/// - Compliance & legal evidence
-///
-/// HOW IT WORKS:
-/// 1. When document is uploaded/modified, hash its metadata + content
-/// 2. Store hash in `document_audit_trail` table (immutable)
-/// 3. Each entry links to previous hash (blockchain chain)
-/// 4. Verification checks if current hash matches stored hash
-///
-/// WHAT IS HASHED:
-/// - Document ID
-/// - User ID
-/// - File size
-/// - Upload timestamp
-/// - Content checksum
-/// - Previous block hash (for chain)
-///
-/// WHY BLOCKCHAIN:
-/// - Tamper-evident: Any change breaks the chain
-/// - Timestamped: Proves document existed at specific time
-/// - Decentralized trust: No single point of failure
-/// - Audit compliance: Required for enterprise/legal
-///
-/// INTEGRATION:
-/// - Called automatically after document upload
-/// - Called on vault document access
-/// - Called before sharing document
-/// - Verification run on document view
+
 class BlockchainAuditService {
   final _supabase = Supabase.instance.client;
 
-  /// Create audit trail entry for document
-  /// This creates an immutable record that cannot be altered
+  
   Future<String> createAuditEntry({
     required int documentId,
     required String userId,
@@ -62,7 +29,7 @@ class BlockchainAuditService {
       // Generate SHA-256 hash of block
       final blockHash = _generateBlockHash(blockData);
 
-      // Store in database (immutable record)
+      // Store in database 
       await _supabase.from('document_audit_trail').insert({
         'document_id': documentId,
         'user_id': userId,
@@ -98,7 +65,7 @@ class BlockchainAuditService {
   /// Returns true if document has not been tampered with
   Future<bool> verifyDocumentIntegrity(int documentId) async {
     try {
-      // Get all audit entries for document (in order)
+      // Get all audit entries for document 
       final auditEntries = await _supabase
           .from('document_audit_trail')
           .select('*')

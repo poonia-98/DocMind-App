@@ -1,4 +1,4 @@
-// lib/features/life/obligations_screen.dart
+
 
 import 'package:flutter/material.dart';
 
@@ -213,9 +213,7 @@ class _ObligationsScreenState extends State<ObligationsScreen> {
   }
 }
 
-// =====================================================
-// OBLIGATION CARD — REAL DATA WIRED
-// =====================================================
+
 class _ObligationCard extends StatelessWidget {
   final Map<String, dynamic> obligation;
   final VoidCallback onTap;
@@ -394,9 +392,7 @@ class _LabelColor {
   const _LabelColor(this.first, this.second);
 }
 
-// =====================================================
-// STATUS BADGE
-// =====================================================
+
 class _StatusBadge extends StatelessWidget {
   final String label;
   final Color color;

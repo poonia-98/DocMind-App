@@ -1,17 +1,17 @@
-// lib/core/api/entity_service.dart
+
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LifeEntitiesService {
   final _supabase = Supabase.instance.client;
 
-  /// ✅ Fetch clean entity views (reads from entity_views table)
+  
   Future<List<Map<String, dynamic>>> getEntities() async {
     try {
       final userId = _supabase.auth.currentUser?.id;
       if (userId == null) throw Exception('User not authenticated');
 
-      // ✅ READ FROM entity_views (clean projection)
+      
       final response = await _supabase
           .from('entity_views')
           .select()

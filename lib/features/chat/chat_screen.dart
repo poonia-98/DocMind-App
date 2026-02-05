@@ -244,7 +244,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
     } catch (e) {
       print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-      print('❌ FATAL ERROR: Both AI providers failed');
+      print(' FATAL ERROR: Both AI providers failed');
       print('Error: $e');
       print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
       

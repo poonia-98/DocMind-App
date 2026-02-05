@@ -1,4 +1,4 @@
-// lib/shared/widgets/sidebar.dart - FIXED VERSION
+
 
 import 'package:flutter/material.dart';
 
@@ -27,7 +27,7 @@ class AppSidebar extends StatelessWidget {
       child: SafeArea(
         child: Column(
           children: [
-            // ✅ IMPROVED: Better header with gradient
+            
             Container(
               margin: const EdgeInsets.all(16),
               padding: const EdgeInsets.all(20),
@@ -101,7 +101,7 @@ class AppSidebar extends StatelessWidget {
 
             const SizedBox(height: 8),
 
-            // ✅ IMPROVED: Colorful icons with proper navigation
+            
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -209,7 +209,7 @@ class AppSidebar extends StatelessWidget {
               endIndent: 16,
             ),
 
-            // ✅ IMPROVED: Better logout button
+            
             Padding(
               padding: const EdgeInsets.all(16),
               child: Material(
@@ -265,7 +265,7 @@ class AppSidebar extends StatelessWidget {
   }
 }
 
-// ✅ IMPROVED: Better sidebar item with color background
+
 class _SidebarItem extends StatelessWidget {
   final IconData icon;
   final String label;

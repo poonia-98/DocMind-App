@@ -1,4 +1,4 @@
-// lib/core/security/biometric_service.dart
+
 import 'package:local_auth/local_auth.dart';
 import 'package:flutter/services.dart';
 
@@ -62,8 +62,7 @@ class BiometricService {
     }
   }
 
-  /// Authenticate user with biometrics
-  /// Returns true if authentication successful
+  
   Future<bool> authenticate({
     required String reason,
     bool useErrorDialogs = true,

@@ -1,9 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-/// Production-ready family access control
-/// Enforces document permissions at BACKEND level (not UI-only)
-/// Permissions: view, edit, none
-/// FULLY WIRED with RLS policies
+
 class FamilyAccessService {
   final _supabase = Supabase.instance.client;
 

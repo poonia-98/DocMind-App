@@ -8,8 +8,7 @@ class EntityDetectionPopup extends StatefulWidget {
   final int documentId;
   final String documentTitle;
   final List<Map<String, dynamic>> detectedEntities;
-    final String documentText; // ✅ ADD THIS
-
+    final String documentText; 
   final VoidCallback onDismiss;
 
   const EntityDetectionPopup({
@@ -18,7 +17,7 @@ class EntityDetectionPopup extends StatefulWidget {
     required this.documentTitle,
     required this.detectedEntities,
     required this.onDismiss,
-        required this.documentText, // ✅ ADD THIS
+        required this.documentText, 
 
   });
 

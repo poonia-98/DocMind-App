@@ -1,4 +1,4 @@
-// lib/features/settings/settings_screen.dart
+
 import 'package:flutter/material.dart';
 import 'package:docmind_app/features/settings/settings_service.dart';
 import '../../core/auth/auth_service.dart';

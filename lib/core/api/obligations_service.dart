@@ -1,4 +1,4 @@
-// lib/core/api/obligations_service.dart
+
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 

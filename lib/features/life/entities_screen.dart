@@ -1,4 +1,4 @@
-// lib/features/life/entities_screen.dart
+
 
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -34,9 +34,7 @@ class _EntitiesScreenState extends State<EntitiesScreen> {
     _loadEntities();
   }
 
-  // =========================
-  // DATA LOADING - NOW READS FROM entity_views
-  // =========================
+  
   Future<void> _loadEntities() async {
     setState(() {
       _isLoading = true;
@@ -44,7 +42,7 @@ class _EntitiesScreenState extends State<EntitiesScreen> {
     });
 
     try {
-      // ✅ This now reads from entity_views (clean data)
+      //  This now reads from entity_views (clean data)
       final entities = await _entitiesService.getEntities();
       setState(() {
         _entities = entities;
@@ -58,9 +56,7 @@ class _EntitiesScreenState extends State<EntitiesScreen> {
     }
   }
 
-  // =========================
-  // ADD ENTITY FLOW
-  // =========================
+  
   void _openAddEntityFlow() {
     showModalBottomSheet(
       context: context,
@@ -100,9 +96,7 @@ class _EntitiesScreenState extends State<EntitiesScreen> {
     );
   }
 
-  // =========================
-  // MANUAL ENTITY FORM
-  // =========================
+  
   void _openManualEntityForm() {
     showDialog(
       context: context,
@@ -118,9 +112,7 @@ class _EntitiesScreenState extends State<EntitiesScreen> {
     );
   }
 
-  // =========================
-  // UI
-  // =========================
+  
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -272,9 +264,7 @@ class _EntitiesScreenState extends State<EntitiesScreen> {
   }
 }
 
-// =====================================================
-// ENTITY CARD — READS CLEAN DATA FROM entity_views
-// =====================================================
+
 
 class _EntityCard extends StatelessWidget {
   final Map<String, dynamic> entity;
@@ -541,9 +531,7 @@ class _BadgeData {
   _BadgeData(this.label, this.color);
 }
 
-// =====================================================
-// MANUAL ENTITY DIALOG
-// =====================================================
+
 class _ManualEntityDialog extends StatefulWidget {
   final VoidCallback onCreated;
 

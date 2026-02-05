@@ -1,4 +1,4 @@
-// lib/features/chat/chat_input_bar.dart
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
@@ -120,7 +120,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
               onTap: () {
                 Navigator.pop(context);
 
-                // ✅ EXACT BLOCK YOU ASKED TO FIT
+                
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -218,7 +218,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
   }
 
   Future<void> _checkForEntities(dynamic documentId) async {
-    // existing implementation assumed
+    
   }
 
   void _sendMessage() {

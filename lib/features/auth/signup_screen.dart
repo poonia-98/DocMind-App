@@ -1,4 +1,4 @@
-// lib/features/auth/signup_screen.dart
+
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../shared/theme/app_colors.dart';
@@ -128,8 +128,7 @@ class _SignupScreenState extends State<SignupScreen> {
         throw Exception('Google sign-in cancelled');
       }
 
-      // OAuth will redirect back to app, handled by deep link
-      // User will be auto-logged in when they return
+      
     } on AuthException catch (e) {
       setState(() {
         _errorMessage = e.message;

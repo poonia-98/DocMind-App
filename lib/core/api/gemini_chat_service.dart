@@ -5,8 +5,7 @@ import '../config.dart';
 class GeminiChatService {
   static const String _baseUrl = 'https://generativelanguage.googleapis.com/v1beta';
   
-  /// Call Gemini API with automatic model fallback
-  /// Returns response text or null if all models fail
+  
   Future<String?> chat({
     required String message,
     String? context,

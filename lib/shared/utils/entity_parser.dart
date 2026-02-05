@@ -1,4 +1,4 @@
-// lib/shared/utils/entity_parser.dart
+
 
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
@@ -21,9 +21,7 @@ class ExpiryBadgeData {
 }
 
 class EntityParser {
-  // ─────────────────────────────────────────────
-  // MAIN PARSER (FIXED)
-  // ─────────────────────────────────────────────
+  
   static ParsedEntity parse(String raw) {
     if (raw.trim().isEmpty) {
       return const ParsedEntity(name: 'Untitled', identifier: '');
@@ -95,9 +93,7 @@ class EntityParser {
     );
   }
 
-  // ─────────────────────────────────────────────
-  // EXPIRY
-  // ─────────────────────────────────────────────
+  
   static int? daysUntil(dynamic raw) {
     if (raw == null) return null;
     try {
@@ -128,9 +124,7 @@ class EntityParser {
     return ExpiryBadgeData('Active', AppColors.success);
   }
 
-  // ─────────────────────────────────────────────
-  // HELPERS
-  // ─────────────────────────────────────────────
+ 
   static String _strip(String raw, String remove) {
     return raw
         .replaceAll(remove, '')

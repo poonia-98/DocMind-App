@@ -1,4 +1,4 @@
-// lib/app.dart - ENTERPRISE OPENING ONLY
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'core/auth/auth_service.dart';
@@ -64,9 +64,7 @@ class EnterpriseApp extends StatelessWidget {
   }
 }
 
-// =============================================================================
-// ENTERPRISE SPLASH - SMOOTH LOGO → HOME TRANSITION
-// =============================================================================
+
 class EnterpriseSplash extends StatefulWidget {
   const EnterpriseSplash({super.key});
 

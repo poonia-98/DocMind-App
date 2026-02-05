@@ -1,4 +1,4 @@
-// lib/features/life/reminders_screen.dart
+
 
 import 'package:flutter/material.dart';
 
@@ -169,9 +169,7 @@ class _RemindersScreenState extends State<RemindersScreen> {
   }
 }
 
-// =====================================================
-// REMINDER CARD — REAL DATA WIRED
-// =====================================================
+
 class _ReminderCard extends StatelessWidget {
   final Map<String, dynamic> reminder;
 
@@ -321,9 +319,7 @@ final preset = DepthIconColors.notification;
   }
 }
 
-// =====================================================
-// EXPIRY BADGE
-// =====================================================
+
 class _ExpiryBadge extends StatelessWidget {
   final String label;
   final Color color;
